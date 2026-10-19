@@ -1,6 +1,6 @@
 # Free page analytics setup
 
-Status: code/configuration prepared; no Cloudflare site, beacon or production traffic verified. The default build remains analytics-free. This file does not claim that statistics are active.
+Status: https://freightquote-lite.pages.dev is live; the analytics beacon and ingestion are not yet verified. The default build remains analytics-free. This file does not claim that statistics are active.
 
 ## Activation after a real deployment exists
 
@@ -22,7 +22,7 @@ The application never places quote values in URLs, storage, custom analytics eve
 | Qualified inquiries | Explicit incoming inquiry | Never collect customer quote data in a public issue |
 | Revenue | Reconciled merchant transaction | No merchant account or checkout is active |
 
-Review real traffic manually after launch; no scheduled automation has been created. Do not manufacture activity or use synthetic traffic for demand claims.
+A daily local-thread follow-up was created for a three-month trial ending 2027-01-19. It requires the host/app to be available; metrics remain unknown until the dashboard is connected. Do not manufacture activity or use synthetic traffic for demand claims.
 
 Official setup: https://developers.cloudflare.com/pages/how-to/web-analytics/
 

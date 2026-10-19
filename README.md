@@ -1,6 +1,8 @@
 # FreightQuote Lite — zero-cost open-source MVP
 
-**Status: v0.1.1 independently checked locally on 2026-10-19; NOT a live website.**
+**Live and independently verified on 2026-10-19: [freightquote-lite.pages.dev](https://freightquote-lite.pages.dev).**
+
+[Source](https://github.com/rikuleolu/freightquote-lite) · [Request a feature](https://github.com/rikuleolu/freightquote-lite/issues/new?template=feature_request.md). Do not publish customer information or actual quotes in issues.
 
 FreightQuote Lite is a no-backend quotation builder for small freight-forwarding teams. It works on the visitor's device, calculates fees in minor currency units, shows cost and gross margin privately, and prints a customer-facing quote without internal costs. Japanese, Chinese, and English are supported.
 
@@ -38,11 +40,11 @@ The deployed site must serve `dist/`, **not** `site/`, because the build copies 
 
 ## Free hosting
 
-See [docs/DEPLOY.md](docs/DEPLOY.md) for GitHub → Cloudflare Pages Git deployment. Free `*.pages.dev` URL, no domain purchase. Connect the account yourself during OAuth. Do not add a paid plan or service. Set environment variable `SITE_URL=https://<your-confirmed-project>.pages.dev` when deployed so the build can generate a canonical URL and sitemap. The program does **not** know its final public URL yet.
+See [docs/DEPLOY.md](docs/DEPLOY.md) for GitHub → Cloudflare Pages Git deployment. Free `*.pages.dev` URL, no domain purchase. Connect the account yourself during OAuth. Do not add a paid plan or service. Set environment variable `SITE_URL=https://<your-confirmed-project>.pages.dev` when deployed so the build can generate a canonical URL and sitemap. The confirmed public origin is `https://freightquote-lite.pages.dev`. Production uses Node 22 and runs checks before the final build.
 
 ## Cloud Codex handoff
 
-Use the separate repository for this project — **do not use or alter any LuAIOS repository**. Read [AGENTS.md](AGENTS.md) and [docs/CODEX_CLOUD_TASK.md](docs/CODEX_CLOUD_TASK.md). The independent repository is [rikuleolu/freightquote-lite](https://github.com/rikuleolu/freightquote-lite), initially private. This source is the verified release candidate. No Codex Cloud task or Cloudflare deployment has been verified; the handoff must use this repository only.
+Use the separate repository for this project — **do not use or alter any LuAIOS repository**. Read [AGENTS.md](AGENTS.md) and [docs/CODEX_CLOUD_TASK.md](docs/CODEX_CLOUD_TASK.md). The independent repository is [rikuleolu/freightquote-lite](https://github.com/rikuleolu/freightquote-lite), initially private. The source is public and deployed through Cloudflare Pages. An independent Codex Cloud environment/task remains pending; the handoff must use this repository only.
 
 ## Independently reproduced validation
 
@@ -50,8 +52,8 @@ Use the separate repository for this project — **do not use or alter any LuAIO
 - 13 browser scenarios passed in isolated headless Microsoft Edge: all languages/currencies, confirmation/cancel flows, invalid inputs, 50 rows, text injection, reload/storage/network checks, and 320/390/768/1440px layouts.
 - Six actual browser PDFs independently passed text checks; three single-page language samples and all 50 rows of the multipage sample were checked. Internal costs and margins were absent. ISO currency codes are explicit.
 - Reproduced and fixed: large safe cent amounts rounded in display; legitimate SEO URLs rejected by deployment tests; customer PDFs omitted an explicit currency code.
-- Local runtime: Node 24.19.0. Cloudflare/CI target: Node 22. Cloud execution is not implied by local results.
-- **Not verified:** GitHub CI, hosted URL, Cloudflare account connection, analytics ingestion, indexing, real users or payments.
+- Local runtime: Node 24.19.0. Cloudflare deployment independently ran all 14 checks on Node 22.22.0 and passed. The real HTTPS site passed the 13 browser scenarios and six PDF assertions; production app/calculator files matched the reviewed source.
+- **Still unverified:** GitHub Actions execution, analytics ingestion, search indexing, real users or payments. The initial private-repository Actions job was skipped to avoid potential charges; Pages build evidence is separate.
 
 Browser QA is separate from the dependency-free build. Install Playwright **for testing only** (`npm install --no-save --package-lock=false playwright@1.62.1`, then `npx playwright install chromium`) and run `npm run test:e2e`. It starts a loopback-only server and uses an isolated profile. `BROWSER_CHANNEL=msedge` selects an installed Edge; `PLAYWRIGHT_MODULE` can point at an already installed Playwright `index.mjs`. PDFs/screenshots go into ignored `qa-artifacts/`, or `QA_OUTPUT`.
 
