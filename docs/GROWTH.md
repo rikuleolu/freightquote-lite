@@ -2,7 +2,11 @@
 
 **Goal:** get one real organic external visitor, one completed sample quote, one qualified customer conversation and eventually one verified payment — without buying traffic or subscriptions. None are claimed as achieved.
 
-## Before publishing
+## Launch status (2026-10-20)
+
+The free tool is live at https://freightquote-lite.pages.dev. Source is public at https://github.com/rikuleolu/freightquote-lite. Canonical URL, sitemap, repository links and a public feature-request entry are configured. Search indexing and natural visitors are not yet verified. The drafts below have not been posted externally.
+
+## Release checklist
 
 - Inspect the whole repository for secrets and private freight rates; use only fictitious sample data.
 - Test the actual Cloudflare URL and print PDF.
@@ -26,8 +30,12 @@ No payment buttons are enabled in V1. A planned ¥980 premium template is only a
 
 ## Draft initial launch copy (not posted)
 
-**Japanese**: 国際物流の見積書を無料で作成できる小さなツールを公開準備中です。仕入コストと販売価格から粗利を計算し、顧客向けのPDFには原価を表示しません。登録不要・ブラウザ内で処理。実運賃の照会機能はありません。
+**Japanese**: 国際物流の見積書を無料で作成できる小さなツールを公開しました。仕入コストと販売価格から粗利を計算し、顧客向けのPDFには原価を表示しません。登録不要・ブラウザ内で処理。実運賃の照会機能はありません。公開サイトでは明示された Cloudflare のページアクセス解析を使用しています。
 
-**Chinese**: 正在准备发布一个免费的国际货代报价工具。可计算成本、报价和毛利，导出的客户 PDF 不会显示内部成本；无需注册，数据仅在浏览器中处理。不提供实时海运运价。
+**Chinese**: 已上线一个免费的国际货代报价工具。可计算成本、报价和毛利，导出的客户 PDF 不会显示内部成本；无需注册，数据仅在浏览器中处理。不提供实时海运运价。线上站点使用已披露的 Cloudflare 页面访问统计。
 
-**English**: Preparing FreightQuote Lite: a free browser-based freight quotation maker. Calculate costs and gross margin privately, then print a customer-ready quote without exposing costs. No registration, tracking or live carrier-rate claims.
+**English**: FreightQuote Lite is live: a free browser-based freight quotation maker. Calculate costs and gross margin privately, then print a customer-ready quote without exposing costs. No registration or live carrier-rate claims. Quote data stays in your browser; the live site uses disclosed Cloudflare page analytics.
+
+Demo: https://freightquote-lite.pages.dev
+
+Source and feedback: https://github.com/rikuleolu/freightquote-lite

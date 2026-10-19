@@ -15,7 +15,7 @@ FreightQuote Lite is a no-backend quotation builder for small freight-forwarding
 - Customer-facing print stylesheet. Use the browser's **Print → Save as PDF** option.
 - Three interface / quotation languages. Sample data for testing only.
 - By default: no account, cookies, quote storage, quote upload, third-party JS, analytics or AI runtime.
-- Optional free Cloudflare page analytics configuration is prepared, but not activated. See [analytics setup](docs/ANALYTICS.md).
+- Free Cloudflare page analytics is enabled on the production site; a live synthetic-quote privacy check passed on 2026-10-20. The default local build remains analytics-free. See [analytics setup](docs/ANALYTICS.md).
 - CSP and other security headers for supported static hosts.
 
 **Important limits:** This is a drafting calculator, not a live freight rate engine or a tax/customs/compliance calculator. Printed quotes are illustrative and need review before commercial use. No checkout, paid offer or automatic acquisition is live in V1.
@@ -44,7 +44,7 @@ See [docs/DEPLOY.md](docs/DEPLOY.md) for GitHub → Cloudflare Pages Git deploym
 
 ## Cloud Codex handoff
 
-Use the separate repository for this project — **do not use or alter any LuAIOS repository**. Read [AGENTS.md](AGENTS.md) and [docs/CODEX_CLOUD_TASK.md](docs/CODEX_CLOUD_TASK.md). The independent repository is [rikuleolu/freightquote-lite](https://github.com/rikuleolu/freightquote-lite), initially private. The source is public and deployed through Cloudflare Pages. An independent Codex Cloud environment/task remains pending; the handoff must use this repository only.
+Use the separate repository for this project — **do not use or alter any LuAIOS repository**. Read [AGENTS.md](AGENTS.md) and [docs/CODEX_CLOUD_TASK.md](docs/CODEX_CLOUD_TASK.md). The independent repository is [rikuleolu/freightquote-lite](https://github.com/rikuleolu/freightquote-lite), initially private. The source is public and deployed through Cloudflare Pages. An independent Codex Cloud environment is published for this repository only; fresh-session acceptance on Node 22.23.3 passed 14 code checks, 13 browser scenarios and six PDF checks on 2026-10-20. The cloud proxy denied production-site access (CONNECT 403), so public HTTPS verification is recorded separately from the cloud-local suite.
 
 ## Independently reproduced validation
 
@@ -53,7 +53,7 @@ Use the separate repository for this project — **do not use or alter any LuAIO
 - Six actual browser PDFs independently passed text checks; three single-page language samples and all 50 rows of the multipage sample were checked. Internal costs and margins were absent. ISO currency codes are explicit.
 - Reproduced and fixed: large safe cent amounts rounded in display; legitimate SEO URLs rejected by deployment tests; customer PDFs omitted an explicit currency code.
 - Local runtime: Node 24.19.0. Cloudflare deployment independently ran all 14 checks on Node 22.22.0 and passed. The real HTTPS site passed the 13 browser scenarios and six PDF assertions; production app/calculator files matched the reviewed source.
-- **Still unverified:** GitHub Actions execution, analytics ingestion, search indexing, real users or payments. The initial private-repository Actions job was skipped to avoid potential charges; Pages build evidence is separate.
+- **Verified after launch:** both the launch PR and its merged main commit passed GitHub Actions. Eight additional production checks passed, including single-beacon injection, three-language disclosure, cookie absence, and successful analytics ingestion without synthetic quote fields in request payloads. **Still unverified:** search indexing, natural users or payments. The initial private-repository Actions job was skipped to avoid potential charges; Pages build evidence is separate.
 
 Browser QA is separate from the dependency-free build. Install Playwright **for testing only** (`npm install --no-save --package-lock=false playwright@1.62.1`, then `npx playwright install chromium`) and run `npm run test:e2e`. It starts a loopback-only server and uses an isolated profile. `BROWSER_CHANNEL=msedge` selects an installed Edge; `PLAYWRIGHT_MODULE` can point at an already installed Playwright `index.mjs`. PDFs/screenshots go into ignored `qa-artifacts/`, or `QA_OUTPUT`.
 
@@ -62,10 +62,10 @@ For independent PDF assertions, install the QA-only Python package `pypdf`, then
 ## Security and data handling
 
 - All user inputs render as **text nodes**, never as HTML.
-- No fetched carrier prices; no external network requests.
+- No fetched carrier prices or quote uploads. The default build makes no external requests; production additionally uses the disclosed Cloudflare page-analytics beacon.
 - Quote entries are kept in page memory and are cleared when the tab refreshes.
 - Customer print view does not include internal costs or margin.
-- No tracking or payments are connected. `CF_ANALYTICS=1` prepares a translated disclosure and the narrowly scoped CSP needed for dashboard-managed Cloudflare Web Analytics. Actual activation requires the account connection and a live network check; it does not measure quote or payment conversion.
+- Production uses disclosed Cloudflare Web Analytics with `CF_ANALYTICS=1`, a narrowly scoped CSP, and verified ingestion. The initial dashboard has insufficient data; test visits are not evidence of demand. No payments are connected. Analytics does not measure quote or payment conversion.
 
 ## Licensing
 

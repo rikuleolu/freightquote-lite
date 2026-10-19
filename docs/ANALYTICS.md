@@ -1,6 +1,6 @@
 # Free page analytics setup
 
-Status: https://freightquote-lite.pages.dev is live; the analytics beacon and ingestion are not yet verified. The default build remains analytics-free. This file does not claim that statistics are active.
+Status as of 2026-10-20: https://freightquote-lite.pages.dev is live with free Cloudflare Web Analytics enabled. Eight production smoke checks passed, including one beacon, successful ingestion, visible disclosure, no cookies, and absence of distinctive synthetic quote values in request URLs or payloads. The initial dashboard reports insufficient data; natural visits remain unknown. The default local build remains analytics-free.
 
 ## Activation after a real deployment exists
 
@@ -10,7 +10,7 @@ Status: https://freightquote-lite.pages.dev is live; the analytics beacon and in
 4. Inspect the deployed response headers and injected script. Use synthetic test quotes only. Confirm network payloads contain no issuer/customer/route/description/cost/price values, and that the dashboard receives a page view. Treat this QA visit as test traffic, not an acquired customer.
 5. If privacy checks fail, disable the dashboard integration, set `CF_ANALYTICS=0` and redeploy. Verify the remote script is gone and `connect-src 'none'` is restored.
 
-The application never places quote values in URLs, storage, custom analytics events or network requests. Third-party beacon behavior still needs live verification before acceptance.
+The application never places quote values in URLs, storage, custom analytics events or network requests. The current production beacon passed the live synthetic-payload check; repeat it if analytics configuration changes.
 
 ## Metrics and honest interpretation
 
@@ -22,7 +22,7 @@ The application never places quote values in URLs, storage, custom analytics eve
 | Qualified inquiries | Explicit incoming inquiry | Never collect customer quote data in a public issue |
 | Revenue | Reconciled merchant transaction | No merchant account or checkout is active |
 
-A daily local-thread follow-up was created for a three-month trial ending 2027-01-19. It requires the host/app to be available; metrics remain unknown until the dashboard is connected. Do not manufacture activity or use synthetic traffic for demand claims.
+A daily local-thread follow-up was created for a three-month trial ending 2027-01-19. It requires the host/app to be available; natural-traffic metrics remain unknown until the connected dashboard contains enough non-test evidence. Do not manufacture activity or use synthetic traffic for demand claims.
 
 Official setup: https://developers.cloudflare.com/pages/how-to/web-analytics/
 

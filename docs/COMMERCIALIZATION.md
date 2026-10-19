@@ -17,7 +17,7 @@ Before selling, prepare the actual downloadable files, example output, delivery 
 
 ## Organic acquisition assets
 
-The existing three-language launch drafts in GROWTH.md describe the actual free capabilities and remain unpublished. Once a real demo URL and public repository are verified, replace preparation wording with launch wording and include those real links. Configure the repository description/topics and a demo link. No mass messaging, scraping, purchased traffic or invented testimonials.
+The existing three-language launch drafts in GROWTH.md describe the actual free capabilities and remain unpublished. The verified demo and public repository links are now included in those drafts; their publication outside this repository remains pending. Configure the repository description/topics and a demo link. No mass messaging, scraping, purchased traffic or invented testimonials.
 
 The first useful commercial signal is an unsolicited, qualified request for a specific template improvement. Start with a public feature-request issue for non-sensitive needs; never ask users to publish real customer names, freight rates or invoices. Keep private commercial communication on an owner-approved channel once one is available.
 
