@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#173a35" />
+  <meta name="description" content="国際物流の見積書をブラウザで簡単作成。運賃と利益を計算し、日本語・中国語・英語の見積書をPDF保存。登録不要、無料、データ送信なし。" />
+  <meta name="robots" content="index,follow" />
+  <title>FreightQuote Lite | 無料の国際物流見積書ツール</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="stylesheet" href="styles.css" />
+  <script type="module" src="app.mjs"></script>
+</head>
+<body>
+<div id="screen-root">
+  <header class="topbar">
+    <div class="layout header-row">
+      <a class="brand" href="#top" aria-label="FreightQuote Lite">
+        <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 36 36" width="36" height="36"><path d="M8 25V13l10-6 10 6v12l-10 5z" fill="#d9aa66"/><path d="M11 20h14M18 9v19M11 14h14" fill="none" stroke="#173a35" stroke-width="2" stroke-linecap="round"/></svg></span>
+        <span>FreightQuote <strong>Lite</strong></span>
+      </a>
+      <nav class="navigation" aria-label="Main navigation">
+        <a href="#how" data-i18n="navHow">使い方</a>
+        <a href="#privacy" data-i18n="navPrivacy">安全性</a>
+        <a href="#opensource" data-i18n="navOpen">オープンソース</a>
+      </nav>
+      <div class="language-switch" role="group" aria-label="Language">
+        <button class="lang active" data-locale="ja" type="button" aria-pressed="true">日本語</button>
+        <button class="lang" data-locale="zh" type="button" aria-pressed="false">中文</button>
+        <button class="lang" data-locale="en" type="button" aria-pressed="false">EN</button>
+      </div>
+    </div>
+  </header>
+  <main id="top">
+    <section class="hero layout">
+      <div class="hero-copy">
+        <div class="eyebrow"><span class="signal"></span><span data-i18n="eyebrow">FREE · NO SIGN-UP · BROWSER ONLY</span></div>
+        <h1 data-i18n="heroTitle">物流の見積書を、<br class="desktop-only">もっとシンプルに。</h1>
+        <p class="hero-lead" data-i18n="heroLead">運賃・諸費用・粗利をすばやく計算。きれいな見積書を日本語・中国語・英語で作成し、PDFとして保存できます。</p>
+        <div class="hero-actions">
+          <a class="primary-link" href="#tool"><span data-i18n="heroCta">無料で見積書を作成</span><span aria-hidden="true">↗</span></a>
+          <span class="small-note" data-i18n="heroNote">アカウント登録・カード登録不要</span>
+        </div>
+        <div class="hero-stats">
+          <div><strong>3</strong><span data-i18n="statLang">対応言語</span></div>
+          <div><strong>0</strong><span data-i18n="statApi">外部API呼び出し</span></div>
+          <div><strong>PDF</strong><span data-i18n="statExport">ブラウザから保存</span></div>
+        </div>
+      </div>
+      <div class="hero-visual" aria-hidden="true">
+        <div class="preview-bar"><span class="preview-dot"></span><span class="preview-dot"></span><span class="preview-dot"></span><span>FREIGHT QUOTATION / PREVIEW</span></div>
+        <div class="preview-title">FREIGHT <span>QUOTE</span></div>
+        <div class="preview-chip">TOKYO <span>→</span> SHANGHAI</div>
+        <div class="preview-lines"><div><span>OCEAN FREIGHT</span><span>¥ 92,000</span></div><div><span>DOCUMENT FEE</span><span>¥ 12,000</span></div><div><span>HANDLING</span><span>¥ 8,000</span></div></div>
+        <div class="preview-total"><span>EST. TOTAL</span><strong>¥ 112,000</strong></div>
+        <span class="visual-caption">DEMO DATA · NOT A LIVE RATE</span>
+      </div>
+    </section>
+    <section class="tool-section" id="tool">
+      <div class="layout">
+        <div class="section-top">
+          <div><div class="section-label" data-i18n="toolLabel">QUOTE BUILDER</div><h2 data-i18n="toolHeading">見積書を作成する</h2><p data-i18n="toolIntro">入力内容はブラウザ内で処理され、サーバーには送信されません。</p></div>
+          <button class="ghost-button" id="sample-button" type="button"><span data-i18n="sample">サンプルを入力</span> ↗</button>
+        </div>
+        <div class="workbench">
+          <div class="editor">
+            <div class="editor-header"><span class="step">01</span><div><h3 data-i18n="details">基本情報</h3><p data-i18n="detailsHint">顧客向けPDFに表示される項目です。</p></div></div>
+            <div class="form-grid">
+              <label class="field"><span data-i18n="issuer">発行元</span><input id="issuer" maxlength="100" data-i18n-placeholder="issuerPlace" placeholder="会社名（任意）" autocomplete="organization" /></label>
+              <label class="field"><span data-i18n="customer">宛先</span><input id="customer" maxlength="100" data-i18n-placeholder="customerPlace" placeholder="お客様名（任意）" /></label>
+              <label class="field"><span data-i18n="origin">出発港 / 地点</span><input id="origin" maxlength="100" data-i18n-placeholder="originPlace" placeholder="例：大阪" /></label>
+              <label class="field"><span data-i18n="destination">到着港 / 地点</span><input id="destination" maxlength="100" data-i18n-placeholder="destPlace" placeholder="例：上海" /></label>
+              <label class="field"><span data-i18n="currency">見積通貨</span><select id="currency"><option value="JPY">JPY · 日本円</option><option value="USD">USD · US Dollar</option><option value="CNY">CNY · 人民元</option></select></label>
+              <label class="field"><span data-i18n="validity">有効期限（任意）</span><input id="validity" type="date" /></label>
+            </div>
+            <div class="section-rule"></div>
+            <div class="editor-header"><span class="step">02</span><div><h3 data-i18n="feeItems">費用明細</h3><p data-i18n="feeHint">仕入単価は社内計算用。顧客向けPDFには表示しません。</p></div></div>
+            <div class="table-scroll"><div class="line-head"><span data-i18n="item">項目</span><span data-i18n="quantity">数量</span><span data-i18n="cost">仕入単価（非公開）</span><span data-i18n="sell">販売単価</span><span></span></div><div id="line-list" aria-live="polite"></div></div>
+            <div class="line-actions"><button type="button" class="outline-button" id="add-line"><span class="plus">＋</span><span data-i18n="addFee">費用を追加</span></button><span class="tip" data-i18n="feeLimit">最大50項目・同一通貨のみ</span></div>
+          </div>
+          <aside class="summary" aria-label="Quote Summary">
+            <div class="summary-eyebrow" data-i18n="calcLabel">LIVE CALCULATION</div>
+            <h3 data-i18n="calcTitle">お見積りサマリー</h3>
+            <div class="summary-separator"></div>
+            <div class="metric"><span data-i18n="costTotal">仕入合計</span><span class="metric-value" id="cost-value">¥0</span></div>
+            <div class="metric"><span data-i18n="salesTotal">販売合計</span><span class="metric-value" id="revenue-value">¥0</span></div>
+            <div class="summary-separator"></div>
+            <div class="profit-area"><span data-i18n="profit">想定粗利</span><strong id="profit-value">¥0</strong></div>
+            <div class="margin"><span data-i18n="margin">売上粗利率</span><strong id="margin-value">0.00%</strong></div>
+            <p class="summary-hint" data-i18n="summaryHint">通貨換算・税金・実際の運賃照会は含みません。</p>
+            <p class="error-box" role="alert" id="validation" hidden></p>
+            <button class="print-button" id="print-button" type="button"><span aria-hidden="true">↓</span><span data-i18n="print">見積書をPDF保存</span></button>
+            <button class="clear-button" id="clear-button" type="button" data-i18n="clear">入力内容をリセット</button>
+            <div class="lock-note"><span aria-hidden="true">♢</span><span data-i18n="privateNote">計算はこのブラウザだけ。データは自動保存しません。</span></div>
+          </aside>
+        </div>
+      </div>
+    </section>
+    <section class="below-section layout" id="how">
+      <div class="section-label" data-i18n="howLabel">WORKFLOW</div><h2 data-i18n="howTitle">使い方は、3ステップ。</h2>
+      <div class="steps"><article class="step-card"><span>01</span><h3 data-i18n="stepOneTitle">情報を入力</h3><p data-i18n="stepOneBody">発着地、費用、販売金額を入力します。</p></article><article class="step-card"><span>02</span><h3 data-i18n="stepTwoTitle">利益を確認</h3><p data-i18n="stepTwoBody">粗利額と売上粗利率が即座に更新されます。</p></article><article class="step-card"><span>03</span><h3 data-i18n="stepThreeTitle">PDFに保存</h3><p data-i18n="stepThreeBody">顧客向けの見積書をブラウザの印刷機能でPDF保存します。</p></article></div>
+    </section>
+    <section class="trust-wrap" id="privacy"><div class="layout trust-content"><div><div class="section-label" data-i18n="privacyLabel">PRIVACY BY DESIGN</div><h2 data-i18n="privacyTitle">見積データを預かりません。</h2><p data-i18n="privacyCopy">入力された会社名・費用・価格はサーバーに送信されません。ブラウザ内で計算するため、アカウントやデータベースは不要です。</p></div><div class="trust-grid"><div><span aria-hidden="true">✓</span><strong data-i18n="trustOne">登録不要</strong></div><div><span aria-hidden="true">✓</span><strong data-i18n="trustTwo">外部AI APIなし</strong></div><div><span aria-hidden="true">✓</span><strong data-i18n="trustThree">広告トラッカーなし</strong></div><div><span aria-hidden="true">✓</span><strong data-i18n="trustFour">ブラウザだけで動作</strong></div></div></div></section>
+    <section class="bottom-section layout" id="opensource"><div><div class="section-label">OPEN SOURCE · FREIGHTQUOTE LITE</div><h2 data-i18n="openTitle">無料で使える、軽量なツール。</h2><p data-i18n="openCopy">最初の公開版は無料です。高度なテンプレートや企業機能の提供は、サービス準備後に検討します。</p><p class="coming" data-i18n="openPending">GitHubリポジトリと有料機能は、公開準備が整い次第ご案内します。</p></div><div class="open-badge">FREE<br><span>FOREVER CORE</span></div></section>
+  </main>
+  <footer class="footer"><div class="layout footer-inner"><span>© 2026 FreightQuote Lite · MIT licensed source</span><span data-i18n="footerNote">デモ・初期版。正式な運賃や契約条件を保証するものではありません。</span><p id="analytics-notice" hidden data-i18n="analyticsNotice">運営者がCloudflare Web Analyticsを有効にすると、閲覧数・参照元・表示速度を集計します。見積内容や入力金額は送信しません。</p></div></footer>
+</div>
+<section id="print-sheet" aria-label="Customer quotation document"></section>
+</body>
+</html>

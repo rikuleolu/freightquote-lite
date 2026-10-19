@@ -1,0 +1,17 @@
+{
+  "name": "freightquote-lite",
+  "version": "0.1.1",
+  "private": true,
+  "description": "Zero-dependency browser-based international freight quote generator",
+  "type": "module",
+  "scripts": {
+    "test": "node --test tests/calculator.test.mjs",
+    "test:e2e": "node tests/browser.e2e.mjs",
+    "check": "node --check src/calculator.mjs && node --check site/app.mjs && npm run build && node --test tests/*.test.mjs",
+    "build": "node scripts/build.mjs"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "license": "MIT"
+}
