@@ -7,8 +7,8 @@ The experiment adds `/products`, three detail/purchase-condition pages, two work
 | Product | Deliverable | Proposed one-time total, including tax | Evaluation |
 | --- | --- | --- | --- |
 | FreightQuote Template Kit | Existing nine HTML templates, Japanese/Chinese/English, three palettes | JPY 980 | `/template-demo`; real Japanese Forest HTML sample |
-| Freight Cost Workbench | Single-file offline HTML; dimensional/actual weight, chargeable rounding, cost and target margin; customer CSV/PDF and save-filled HTML | JPY 1,480 | `/demo-freight`; worked text example |
-| Solo Project Quote | Single-file offline HTML; work/revision hours, expenses, target margin, deposit/balance; customer CSV/PDF and save-filled HTML | JPY 980 | `/demo-solo`; worked text example |
+| Freight Cost Workbench | ZIP containing single-file offline HTML; dimensional/actual weight, chargeable rounding, cost and target margin; customer CSV/PDF and save-filled HTML | JPY 1,480 | `/demo-freight`; worked text example |
+| Solo Project Quote | ZIP containing single-file offline HTML; work/revision hours, expenses, target margin, deposit/balance; customer CSV/PDF and save-filled HTML | JPY 980 | `/demo-solo`; worked text example |
 
 Prices are hypotheses, not validated willingness to pay. All complete files are freely available during evaluation. The source is public; new tools are MIT and the existing template package retains its included permissive notice. A future purchase supports packaged files and stated file-use assistance, not exclusive access. Do not imply an unprotected public download verifies a payment.
 
@@ -68,3 +68,7 @@ References checked on 2026-10-20:
 ## Evidence-based next experiment
 
 Let the owner and prospective users try the samples. Record genuine product-specific requests and actual usability problems; do not fabricate demand or treat test visits/downloads as orders. After merchant readiness and a separate sales release, measure completed payments, refunds, processing fees and bank settlement separately. No outreach messages or new recurring monitors are started by this change.
+
+## Verified deployment correction
+
+Read-back of the first branch deployment showed Cloudflare injecting its analytics script into raw downloadable HTML. A failing regression test was added before correction. New tools and the template sample are therefore delivered inside deterministic ZIP archives; no raw HTML remains in the downloads directory. The live browser suite extracts and executes the actual downloaded ZIP content when QA_BASE_URL is set, instead of substituting local files. ZIP integrity is also checked independently with Python zipfile. No hosting analytics setting was changed.

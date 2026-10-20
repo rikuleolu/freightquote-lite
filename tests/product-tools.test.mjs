@@ -1,7 +1,22 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {readFile,stat} from 'node:fs/promises';
+import {readFile,stat,readdir} from 'node:fs/promises';
 import {freight,service,csvCell} from '../src/product-calculators.mjs';
+import {zipProduct} from '../scripts/zip-product.mjs';
+
+test('ZIP uses standard CRC-32 and repeatable single-file contents',()=>{
+  const a=zipProduct('example.html','123456789');
+  assert.equal(a.readUInt32LE(14),0xcbf43926);
+  assert.equal(a.readUInt32LE(a.length-22),0x06054b50);
+  assert.deepEqual(a,zipProduct('example.html','123456789'));
+});
+
+test('offline downloads are archives immune to host HTML analytics injection',async()=>{
+  const files=await readdir(new URL('../dist/downloads/',import.meta.url));
+  assert.deepEqual(files.filter(f=>f.endsWith('.html')),[]);
+  for(const file of ['freight-workbench.zip','solo-quote.zip','quote-ja-sample.zip'])
+    assert.ok(files.includes(file),file);
+});
 
 test('freight: volume, chargeable increments and target margin are distinct',()=>{
   const r=freight({length:'50',width:'40',height:'30',cartons:'10',weight:'85',divisor:'6000',step:'0.5',rate:'600',local:'10000',margin:'20'});
@@ -33,10 +48,12 @@ test('all three offers ship files, samples, terms, and fail-closed purchase page
     assert.match(html,/7日/);
     assert.doesNotMatch(html,/<form|buy\.stripe\.com|checkout\.stripe\.com|sk_live_|sk_test_|pk_live_/i);
   }
-  for(const file of ['downloads/FreightQuote-Template-Kit.zip','downloads/quote-ja-sample.html','downloads/freight-workbench.html','downloads/solo-quote.html','samples/freight-example.txt','samples/solo-example.txt'])
+  for(const file of ['downloads/FreightQuote-Template-Kit.zip','downloads/quote-ja-sample.zip','downloads/freight-workbench.zip','downloads/solo-quote.zip','samples/freight-example.txt','samples/solo-example.txt'])
     assert.ok((await stat(new URL(file,root))).size>150);
-  for(const file of ['downloads/freight-workbench.html','downloads/solo-quote.html']){
-    const html=await readFile(new URL(file,root),'utf8');
+  for(const file of ['downloads/freight-workbench.zip','downloads/solo-quote.zip']){
+    const zip=await readFile(new URL(file,root));
+    const start=30+zip.readUInt16LE(26)+zip.readUInt16LE(28);
+    const html=zip.subarray(start,start+zip.readUInt32LE(18)).toString('utf8');
     assert.doesNotMatch(html,/<script[^>]+src=|fetch\(|localStorage|sendBeacon|XMLHttpRequest/);
     assert.match(html,/MIT License/);
     assert.match(html,/save-copy/);

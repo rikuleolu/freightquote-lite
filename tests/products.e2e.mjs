@@ -31,6 +31,20 @@ try{
   const errors=[];page.on('pageerror',e=>errors.push(e.message));
   const requests=[];context.on('request',r=>requests.push(r.url()));
   async function step(name,fn){await fn();results.push({name,status:'PASS'});console.log('PASS',name);}
+  async function offlineFile(name){
+    const archive=name.replace('.html','.zip');
+    const zip=process.env.QA_BASE_URL
+      ?await (await context.request.get(base+'/downloads/'+archive)).body()
+      :await readFile(join(root,'downloads',archive));
+    assert.equal(zip.readUInt32LE(0),0x04034b50);
+    assert.equal(zip.readUInt16LE(8),0);
+    const start=30+zip.readUInt16LE(26)+zip.readUInt16LE(28);
+    const html=zip.subarray(start,start+zip.readUInt32LE(18));
+    assert.ok(!html.includes(Buffer.from('cloudflareinsights')));
+    assert.ok(!html.includes(Buffer.from('data-cf-beacon')));
+    const file=join(output,'unpacked-'+name);
+    await writeFile(file,html);return pathToFileURL(file).href;
+  }
   await step('three offers, pending purchase and every product link resolves',async()=>{
     await page.goto(base+'/products');
     assert.equal(await page.locator('.card').count(),3);
@@ -85,7 +99,7 @@ try{
       const offline=await context.newPage();const external=[];const offlineErrors=[];
       offline.on('request',r=>{if(!r.url().startsWith('file:')&&!r.url().startsWith('blob:'))external.push(r.url());});
       offline.on('pageerror',e=>offlineErrors.push(e.message));
-      await offline.goto(pathToFileURL(join(root,'downloads',file)).href);
+      await offline.goto(await offlineFile(file));
       await offline.locator('[name=customer]').fill('SYNTHETIC <script>alert(1)</script>');
       await offline.locator('[name=margin]').fill('25');
       const expected=await offline.locator('[data-result=price]').innerText();
@@ -101,7 +115,7 @@ try{
   });
   await step('template sample edits and reopens as a working offline product',async()=>{
     const p=await context.newPage();const errs=[];p.on('pageerror',e=>errs.push(e.message));
-    await p.goto(pathToFileURL(join(root,'downloads/quote-ja-sample.html')).href);
+    await p.goto(await offlineFile('quote-ja-sample.html'));
     const first=p.locator('input').first();await first.fill('SYNTHETIC Example');
     const save=p.getByRole('button',{name:/HTML/});
     const promise=p.waitForEvent('download');await save.click();const dl=await promise;
