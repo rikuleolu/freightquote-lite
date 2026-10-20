@@ -30,3 +30,11 @@ jobs:
         run: |
           npm run test:e2e
           npm run test:products
+      - name: Retain short-lived synthetic QA evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: review-evidence
+          path: qa-artifacts/
+          retention-days: 1
+          if-no-files-found: ignore
