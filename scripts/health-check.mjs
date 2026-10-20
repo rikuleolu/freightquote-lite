@@ -9,12 +9,12 @@ const cases = [
   ['/', 'id="tool"'],
   ['/app.mjs', 'calculateQuote'],
   ['/launch-copy.mjs', 'resourcesTitle'],
-  ['/guide-ja.html', '国際物流見積書の作り方'],
-  ['/guide-zh.html', '国际物流报价单使用指南'],
-  ['/guide-en.html', 'How to prepare a freight quotation'],
+  ['/guide-ja', '国際物流見積書の作り方'],
+  ['/guide-zh', '国际物流报价单使用指南'],
+  ['/guide-en', 'How to prepare a freight quotation'],
   ['/samples/customer-quote-en.csv', 'DEMO,USD'],
   ['/robots.txt', `${origin}/sitemap.xml`],
-  ['/sitemap.xml', `${origin}/guide-en.html`],
+  ['/sitemap.xml', `${origin}/guide-en</loc>`],
 ];
 const results=[];
 for(const [path,expected] of cases){

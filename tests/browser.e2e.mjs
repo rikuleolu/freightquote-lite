@@ -15,7 +15,8 @@ const headers=Object.fromEntries((await readFile(join(root,'_headers'),'utf8')).
 const mime={'.html':'text/html; charset=utf-8','.css':'text/css','.mjs':'text/javascript','.svg':'image/svg+xml','.xml':'application/xml','.txt':'text/plain'};
 const server=createServer(async(req,res)=>{
   try {
-    const pathname=decodeURIComponent(new URL(req.url,'http://localhost').pathname);
+    let pathname=decodeURIComponent(new URL(req.url,'http://localhost').pathname);
+    if(/^\/guide-(ja|zh|en)$/.test(pathname)) pathname+='.html';
     const file=resolve(root,'.'+(pathname==='/'?'/index.html':pathname));
     if(relative(root,file).startsWith('..')){res.writeHead(403).end();return;}
     res.writeHead(200,{'Content-Type':mime[extname(file)]??'application/octet-stream',...headers});
@@ -153,7 +154,7 @@ try {
     await fresh();
     for(const [locale,currency] of [['ja','JPY'],['zh','CNY'],['en','USD']]){
       await page.locator(`[data-locale="${locale}"]`).click();
-      assert.equal(await page.locator('[data-guide-link]').getAttribute('href'),`guide-${locale}.html`);
+      assert.equal(await page.locator('[data-guide-link]').getAttribute('href'),`guide-${locale}`);
       for(const key of ['resourcesTitle','offerBody','faqQ1','faqA1']){
         assert.notEqual(await page.locator(`[data-i18n="${key}"]`).textContent(),key);
       }
@@ -171,7 +172,7 @@ try {
   });
   await step('guide links, language deep links and unsupported language fallback',async()=>{
     for(const lang of ['ja','zh','en']){
-      await page.goto(`${base}/guide-${lang}.html`);
+      await page.goto(`${base}/guide-${lang}`);
       assert.equal(await page.locator('main h1').count(),1);
       assert.equal(await page.locator('main section').count(),6);
       await page.locator('.back-link').click();
