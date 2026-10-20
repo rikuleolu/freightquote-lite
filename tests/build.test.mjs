@@ -9,7 +9,7 @@ test('SEO build emits one consistent origin and rejects invalid origins', async 
   const root=resolve(import.meta.dirname,'..');
   const temp=await mkdtemp(join(tmpdir(),'freightquote-build-'));
   try {
-    for(const folder of ['scripts','site','src']) await cp(join(root,folder),join(temp,folder),{recursive:true});
+    for(const folder of ['scripts','site','src','LICENSE']) await cp(join(root,folder),join(temp,folder),{recursive:true});
     const build=(url)=>spawnSync(process.execPath,['scripts/build.mjs'],{
       cwd:temp,env:{...process.env,SITE_URL:url,CF_ANALYTICS:'0'},encoding:'utf8',timeout:15000,
     });

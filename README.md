@@ -1,5 +1,11 @@
 # FreightQuote Lite — zero-cost open-source MVP
 
+## Three working digital tools
+
+[Try the product catalog](https://freightquote-lite.pages.dev/products): the existing JPY 980 one-time FreightQuote Template Kit uses its separate canonical Stripe sales pages; Freight Cost Workbench (proposed JPY 1,480) and Solo Project Quote (proposed JPY 980) have working offline ZIP tools, free demos, customer CSV/PDF, and disabled checkout until merchant-specific payment and fulfilment are verified. They are **not** claimed as paid products currently on sale.
+
+No new hosting subscriptions or runtime libraries are required. Free samples and full trial files are available without an account; a successful download must not be treated as proof of payment.
+
 ## v0.2 public operating release
 
 The free site includes [Japanese](https://freightquote-lite.pages.dev/guide-ja), [Chinese](https://freightquote-lite.pages.dev/guide-zh) and [English](https://freightquote-lite.pages.dev/guide-en) workflow guides, customer-only downloadable CSV examples and a practical FAQ. Language-specific entry links use `?lang=ja`, `?lang=zh` or `?lang=en`. Quote data stays local and is not auto-saved.
