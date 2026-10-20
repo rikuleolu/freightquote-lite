@@ -2,7 +2,7 @@
 
 ## v0.2 public operating release
 
-The free site includes [Japanese](https://freightquote-lite.pages.dev/guide-ja.html), [Chinese](https://freightquote-lite.pages.dev/guide-zh.html) and [English](https://freightquote-lite.pages.dev/guide-en.html) workflow guides, customer-only downloadable CSV examples and a practical FAQ. Language-specific entry links use `?lang=ja`, `?lang=zh` or `?lang=en`. Quote data stays local and is not auto-saved.
+The free site includes [Japanese](https://freightquote-lite.pages.dev/guide-ja), [Chinese](https://freightquote-lite.pages.dev/guide-zh) and [English](https://freightquote-lite.pages.dev/guide-en) workflow guides, customer-only downloadable CSV examples and a practical FAQ. Language-specific entry links use `?lang=ja`, `?lang=zh` or `?lang=en`. Quote data stays local and is not auto-saved.
 
 Paid templates are not yet on sale. See the [operating plan](docs/OPERATIONS.md) for the trial scope, availability checks and commercial readiness requirements.
 

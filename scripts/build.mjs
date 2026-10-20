@@ -31,7 +31,7 @@ if (siteUrl) {
     throw new Error('SITE_URL must be a bare HTTPS origin with no credentials/path/query.');
   }
   const origin = parsed.origin;
-  const pages = ['/', '/guide-ja.html', '/guide-zh.html', '/guide-en.html'];
+  const pages = ['/', '/guide-ja', '/guide-zh', '/guide-en'];
   const xml = '<?xml version="1.0" encoding="UTF-8"?>\n' +
     '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
     pages.map(path=>`  <url><loc>${origin}${path}</loc></url>`).join('\n') +
@@ -45,8 +45,8 @@ if (siteUrl) {
   for (const lang of ['ja','zh','en']) {
     const guidePath=join(out,`guide-${lang}.html`);
     let guide=await readFile(guidePath,'utf8');
-    const alternates=['ja','zh','en'].map(l=>`<link rel="alternate" hreflang="${l==='zh'?'zh-CN':l}" href="${origin}/guide-${l}.html">`).join('\n');
-    guide=guide.replace('</head>',`<link rel="canonical" href="${origin}/guide-${lang}.html">\n${alternates}\n</head>`);
+    const alternates=['ja','zh','en'].map(l=>`<link rel="alternate" hreflang="${l==='zh'?'zh-CN':l}" href="${origin}/guide-${l}">`).join('\n');
+    guide=guide.replace('</head>',`<link rel="canonical" href="${origin}/guide-${lang}">\n${alternates}\n</head>`);
     if (analytics==='1') {
       const notice={
         ja:'Cloudflare Web Analyticsで閲覧数・参照元・表示速度を集計します。見積内容は送信しません。',

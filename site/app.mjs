@@ -56,7 +56,7 @@ const t = (key) => I18N[state.locale][key] ?? key;
 const money = (minor) => formatMoney(minor,state.currency,localeFormat[state.locale]);
 
 function renderLanguage() {
-  document.querySelector('[data-guide-link]').href = `guide-${state.locale}.html`;
+  document.querySelector('[data-guide-link]').href = `guide-${state.locale}`;
   document.querySelector('[data-sample-link]').href = `samples/customer-quote-${state.locale}.csv`;
   document.documentElement.lang = state.locale === 'zh' ? 'zh-CN' : state.locale;
   document.title = ({ja:'FreightQuote Lite | 無料の国際物流見積書ツール',zh:'FreightQuote Lite | 免费国际物流报价单工具',en:'FreightQuote Lite | Free freight quotation maker'})[state.locale];

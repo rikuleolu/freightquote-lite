@@ -18,8 +18,8 @@ test('SEO build emits one consistent origin and rejects invalid origins', async 
     assert.match(html,/<link rel="canonical" href="https:\/\/freightquote\.example\/"/);
     assert.match(await readFile(join(temp,'dist/sitemap.xml'),'utf8'),/<loc>https:\/\/freightquote\.example\/<\/loc>/);
     for(const lang of ['ja','zh','en']){
-      assert.match(await readFile(join(temp,'dist/sitemap.xml'),'utf8'),new RegExp(`/guide-${lang}\\.html</loc>`));
-      assert.match(await readFile(join(temp,`dist/guide-${lang}.html`),'utf8'),new RegExp(`rel="canonical" href="https://freightquote.example/guide-${lang}\\.html"`));
+      assert.match(await readFile(join(temp,'dist/sitemap.xml'),'utf8'),new RegExp(`/guide-${lang}</loc>`));
+      assert.match(await readFile(join(temp,`dist/guide-${lang}.html`),'utf8'),new RegExp(`rel="canonical" href="https://freightquote.example/guide-${lang}"`));
     }
     assert.match(await readFile(join(temp,'dist/robots.txt'),'utf8'),/Sitemap: https:\/\/freightquote\.example\/sitemap.xml/);
     const optIn=spawnSync(process.execPath,['scripts/build.mjs'],{
