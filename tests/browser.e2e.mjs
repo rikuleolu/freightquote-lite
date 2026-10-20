@@ -149,12 +149,47 @@ try {
       if(width===390)await screenshot(`mobile-${locale}.png`);
     }
   });
+  await step('localized resources, real CSV downloads and accessible FAQ',async()=>{
+    await fresh();
+    for(const [locale,currency] of [['ja','JPY'],['zh','CNY'],['en','USD']]){
+      await page.locator(`[data-locale="${locale}"]`).click();
+      assert.equal(await page.locator('[data-guide-link]').getAttribute('href'),`guide-${locale}.html`);
+      for(const key of ['resourcesTitle','offerBody','faqQ1','faqA1']){
+        assert.notEqual(await page.locator(`[data-i18n="${key}"]`).textContent(),key);
+      }
+      const first=page.locator('.faq-list details').first();
+      if(!await first.locator('p').isVisible()) await first.locator('summary').click();
+      assert.equal(await first.locator('p').isVisible(),true);
+      const downloading=page.waitForEvent('download');
+      await page.locator('[data-sample-link]').click();
+      const download=await downloading;
+      assert.equal(download.suggestedFilename(),`customer-quote-${locale}.csv`);
+      const csv=await readFile(await download.path(),'utf8');
+      assert.ok(csv.includes(currency));
+      assert.doesNotMatch(csv,/cost|profit|仕入|粗利|成本|毛利/i);
+    }
+  });
+  await step('guide links, language deep links and unsupported language fallback',async()=>{
+    for(const lang of ['ja','zh','en']){
+      await page.goto(`${base}/guide-${lang}.html`);
+      assert.equal(await page.locator('main h1').count(),1);
+      assert.equal(await page.locator('main section').count(),6);
+      await page.locator('.back-link').click();
+      await page.locator('.line-row').waitFor();
+      assert.equal(await page.locator(`[data-locale="${lang}"]`).getAttribute('aria-pressed'),'true');
+    }
+    await page.goto(`${base}/?lang=unsupported`);
+    assert.equal(await page.locator('[data-locale="ja"]').getAttribute('aria-pressed'),'true');
+  });
   await step('reload clears data, no cookies or storage, no unexpected network or JS errors',async()=>{
     await fresh();await page.locator('#sample-button').click();await page.reload();
     assert.equal(await page.locator('#issuer').inputValue(),'');
     assert.deepEqual(await page.evaluate(()=>[localStorage.length,sessionStorage.length]),[0,0]);
     assert.equal((await context.cookies()).length,0);
-    assert.deepEqual(network.filter(r=>!r.url.startsWith(base+'/')||r.method!=='GET'||r.postData!==null),[]);
+    // Edge opens its own internal downloads panel after a real download.
+    // These browser-local resources are not website network transmissions.
+    const websiteNetwork=network.filter(r=>!r.url.startsWith('edge://'));
+    assert.deepEqual(websiteNetwork.filter(r=>!r.url.startsWith(base+'/')||r.method!=='GET'||r.postData!==null),[]);
     assert.deepEqual(consoleErrors,[]);
   });
   await writeFile(join(artifacts,'e2e-results.json'),JSON.stringify({browser:browser.version(),base,results,network,consoleErrors},null,2));

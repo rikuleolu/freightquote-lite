@@ -1,5 +1,11 @@
 # FreightQuote Lite — zero-cost open-source MVP
 
+## v0.2 public operating release
+
+The free site includes [Japanese](https://freightquote-lite.pages.dev/guide-ja.html), [Chinese](https://freightquote-lite.pages.dev/guide-zh.html) and [English](https://freightquote-lite.pages.dev/guide-en.html) workflow guides, customer-only downloadable CSV examples and a practical FAQ. Language-specific entry links use `?lang=ja`, `?lang=zh` or `?lang=en`. Quote data stays local and is not auto-saved.
+
+Paid templates are not yet on sale. See the [operating plan](docs/OPERATIONS.md) for the trial scope, availability checks and commercial readiness requirements.
+
 **Live and independently verified on 2026-10-19: [freightquote-lite.pages.dev](https://freightquote-lite.pages.dev).**
 
 [Source](https://github.com/rikuleolu/freightquote-lite) · [Request a feature](https://github.com/rikuleolu/freightquote-lite/issues/new?template=feature_request.md). Do not publish customer information or actual quotes in issues.
