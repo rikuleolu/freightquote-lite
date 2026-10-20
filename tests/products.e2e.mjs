@@ -69,7 +69,7 @@ try{
       assert.ok(await page.locator(`a[href="${id}-download"]`).count()>0);
       assert.ok(await page.locator('a[href="tool-purchase-terms"]').count()>0);
     }
-    for(const path of ['products','template-demo','template-kit-zh','buy-freight','buy-solo','product-terms','tool-purchase-terms','freight-download','solo-download']){
+    for(const path of ['products','template-demo','template-kit-zh','buy-freight','buy-solo','product-terms','tool-purchase-terms','freight-download','solo-download','help']){
       await page.goto(base+'/'+path);
       for(const href of await page.locator('a[href]').evaluateAll(as=>as.map(a=>a.getAttribute('href')))){
         const url=new URL(href,page.url());
@@ -89,7 +89,7 @@ try{
     }
   });
   await step('desktop and mobile catalog/demo layouts have no horizontal overflow',async()=>{
-    for(const width of [390,1440])for(const path of ['products','template-demo','demo-freight','demo-solo','buy-freight','buy-solo','template-kit-zh','product-terms','tool-purchase-terms','freight-download','solo-download']){
+    for(const width of [390,1440])for(const path of ['products','template-demo','demo-freight','demo-solo','buy-freight','buy-solo','template-kit-zh','product-terms','tool-purchase-terms','freight-download','solo-download','help']){
       await page.setViewportSize({width,height:900});await page.goto(base+'/'+path);
       assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),path+' '+width);
       await page.screenshot({path:join(output,`${path}-${width}.png`),fullPage:true});
@@ -123,6 +123,45 @@ try{
     assert.deepEqual(await context.cookies(),[]);
     if(!process.env.QA_BASE_URL)assert.ok(requests.filter(url=>/^https?:/.test(url)).every(url=>url.startsWith(base)),requests.join('\n'));
   });
+  await step('customer quotes carry reusable identity, scope and planned payment schedule',async()=>{
+    for(const kind of ['freight','solo']){
+      await page.goto(base+'/demo-'+kind);
+      const values={issuer:'Sample Company',contact:'support@example.invalid',customer:'Example Customer',project:kind==='freight'?'Air parcel estimate / SAMPLE':'Design work / SAMPLE',reference:'DEMO-2026-001',validity:'2026-11-30',scope:kind==='freight'?'Air linehaul for ten identical cartons.\nDocument preparation included.':'Two design concepts; one consolidated revision.\nPDF deliverable.',exclusions:kind==='freight'?'Customs clearance, duties and insurance excluded.':'Printing and additional revisions excluded.'};
+      for(const [name,value] of Object.entries(values))await page.locator(`[name="${name}"]`).fill(value.replaceAll('\\n','\n'));
+      for(const [name,id] of [['issuer','quote-issuer'],['contact','quote-contact'],['reference','quote-reference'],['validity','quote-validity'],['scope','quote-scope'],['exclusions','quote-exclusions']])
+        assert.equal(await page.locator('#'+id).innerText(),values[name].replaceAll('\\n','\n'));
+      if(kind==='solo'){
+        assert.equal(await page.locator('#customer-deposit').innerText(),'JPY 23,625');
+        assert.equal(await page.locator('#customer-balance').innerText(),'JPY 55,125');
+      }
+      const downloadPromise=page.waitForEvent('download');await page.locator('#export').click();
+      const filename=join(output,kind+'-customer-ready.csv');await (await downloadPromise).saveAs(filename);
+      const csv=await readFile(filename,'utf8');
+      for(const text of ['Issuer','DEMO-2026-001','2026-11-30',values.issuer,values.exclusions])assert.ok(csv.includes(text),text);
+      assert.doesNotMatch(csv,/internal|margin|profit|70000|63000/i);
+      if(kind==='solo')for(const text of ['Planned deposit','23625','55125'])assert.ok(csv.includes(text));
+      await page.emulateMedia({media:'print'});
+      assert.equal(await page.locator('#tool').isVisible(),false);
+      assert.equal(await page.locator('#quote-scope').isVisible(),true);
+      await page.pdf({path:join(output,kind+'-customer-ready.pdf'),format:'A4',printBackground:true});
+      await page.screenshot({path:join(output,kind+'-customer-ready.png'),fullPage:true});
+      await page.emulateMedia({media:'screen'});
+      await page.locator('[name=margin]').fill('100');
+      for(const id of kind==='solo'?['customer-price','customer-deposit','customer-balance']:['customer-price'])
+        assert.equal(await page.locator('#'+id).innerText(),'—');
+      assert.equal(await page.locator('#print').isDisabled(),true);
+    }
+  });
+  await step('scope fields remain text and missing scope is never represented as all-inclusive',async()=>{
+    await page.goto(base+'/demo-solo');
+    assert.ok((await page.locator('#quote-scope').innerText()).includes('To be confirmed'));
+    await page.locator('[name=scope]').fill('=SUM(1,2)\n<script>alert(1)</script>');
+    await page.locator('[name=exclusions]').fill('<img src=x onerror=alert(1)>');
+    assert.equal(await page.locator('#customer-sheet script,#customer-sheet img').count(),0);
+    const downloadPromise=page.waitForEvent('download');await page.locator('#export').click();
+    const path=join(output,'scope-safe.csv');await (await downloadPromise).saveAs(path);
+    assert.ok((await readFile(path,'utf8')).includes('"\'=SUM(1,2)'));
+  });
   await step('offline full tools save edited HTML, reopen, export and make no requests',async()=>{
     for(const [file,kind] of [['freight-workbench.html','freight'],['solo-quote.html','solo']]){
       const offline=await context.newPage();const external=[];const offlineErrors=[];
@@ -133,6 +172,10 @@ try{
       assert.equal(await offline.locator('[data-result=price]').innerText(),kind==='freight'?'JPY 87,500':'JPY 78,750');
       await offline.locator('[name=customer]').fill('SYNTHETIC <script>alert(1)</script>');
       await offline.locator('[name=margin]').fill('25');
+      await offline.locator('[name=issuer]').fill('SYNTHETIC Company');
+      await offline.locator('[name=validity]').fill('2026-11-30');
+      await offline.locator('[name=scope]').fill('First line\nSecond line </textarea><script>alert(1)</script>');
+      await offline.locator('[name=exclusions]').fill('No printing or shipment included.');
       const expected=await offline.locator('[data-result=price]').innerText();
       const promise=offline.waitForEvent('download');await offline.locator('#save-copy').click();
       const dl=await promise;const saved=join(output,kind+'-saved.html');await dl.saveAs(saved);
@@ -140,6 +183,11 @@ try{
       assert.equal(await offline.locator('[name=customer]').inputValue(),'SYNTHETIC <script>alert(1)</script>');
       assert.equal(await offline.locator('[data-result=price]').innerText(),expected);
       assert.equal(await offline.locator('#customer-name script').count(),0);
+      assert.equal(await offline.locator('[name=scope]').inputValue(),'First line\nSecond line </textarea><script>alert(1)</script>');
+      assert.equal(await offline.locator('[name=issuer]').inputValue(),'SYNTHETIC Company');
+      assert.equal(await offline.locator('[name=validity]').inputValue(),'2026-11-30');
+      assert.equal(await offline.locator('#quote-exclusions').innerText(),'No printing or shipment included.');
+      assert.equal(await offline.locator('#quote-scope script').count(),0);
       const csvPromise=offline.waitForEvent('download');await offline.locator('#export').click();
       const csvFile=join(output,kind+'-offline.csv');await (await csvPromise).saveAs(csvFile);
       const csv=await readFile(csvFile,'utf8');

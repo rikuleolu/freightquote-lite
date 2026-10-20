@@ -10,6 +10,8 @@ await mkdir(join(out,'lib'),{recursive:true});
 await copyFile(join(base,'src','calculator.mjs'),join(out,'lib','calculator.mjs'));
 await buildProducts(base,out);
 const productPageDescriptions = {
+  "buy-freight": "航空・宅配の計費重量と粗利から顧客見積を作成。無料の完全版と任意購入1,480円の内容、動作環境、ファイル使用案内と返品条件を確認。",
+  "buy-solo": "単発案件の工数・修正・経費を見積もり、顧客に範囲と前払額を提示。無料の完全版と任意購入980円、ファイル使用案内と返品条件を確認。",
   "products": "無料で試せる物流・見積ツール集。三言語の物流見積テンプレート、容積重量・粗利計算、フリーランスの工数と前払額の試算を紹介。",
   "demo-freight": "貨物の縦横高さ・実重量・換算係数から容積重量と計費重量を試算し、仕入原価と目標粗利率からJPY建ての参考売価を計算。無料デモ。",
   "demo-solo": "フリーランスの案件見積もりを無料で試算。作業・修正時間、経費、目標粗利率、前受金と残額を計算。税・請求書発行は非対応。",
@@ -45,7 +47,7 @@ if (siteUrl) {
     throw new Error('SITE_URL must be a bare HTTPS origin with no credentials/path/query.');
   }
   const origin = parsed.origin;
-  const pages = ['/', '/guide-ja', '/guide-zh', '/guide-en', '/template-kit-ja', '/template-kit-zh', '/template-kit-en', '/commerce-disclosure', '/purchase-terms', '/privacy-policy', '/products', '/demo-freight', '/demo-solo', '/template-demo', '/product-terms'];
+  const pages = ['/', '/guide-ja', '/guide-zh', '/guide-en', '/template-kit-ja', '/template-kit-zh', '/template-kit-en', '/commerce-disclosure', '/purchase-terms', '/privacy-policy', '/products', '/demo-freight', '/demo-solo', '/template-demo', '/product-terms', '/help', '/buy-freight', '/buy-solo'];
   const xml = '<?xml version="1.0" encoding="UTF-8"?>\n' +
     '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
     pages.map(path=>`  <url><loc>${origin}${path}</loc></url>`).join('\n') +
@@ -76,6 +78,8 @@ if (siteUrl) {
     const html=await readFile(path,'utf8');
     await writeFile(path,html.replace('</head>',`<link rel="canonical" href="${origin}/${slug}"></head>`));
   }
+  const helpPath=join(out,'help.html');
+  await writeFile(helpPath,(await readFile(helpPath,'utf8')).replace('</head>',`<link rel="canonical" href="${origin}/help"></head>`));
   console.log('SEO metadata generated for', origin);
   for(const lang of ['ja','zh','en']){
     const path=join(out,`template-kit-${lang}.html`);

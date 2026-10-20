@@ -23,6 +23,7 @@ const cases = [
   ['/purchase-terms', 'info@anshin-corp.com'],
   ['/privacy-policy', 'info@anshin-corp.com'],
   ['/products', 'Freight Cost Workbench'],
+  ['/help', 'info@anshin-corp.com'],
   ['/demo-freight', '計費重量'],
   ['/demo-solo', 'Solo Project Quote'],
   ['/buy-freight', 'https://buy.stripe.com/aFa5kC6dfc4B3NH2ixbbG01'],

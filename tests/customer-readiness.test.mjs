@@ -22,6 +22,7 @@ test('product detail pages answer free versus paid before checkout',async()=>{
     assert.ok(html.includes('id="who-it-fits"'));
     assert.ok(html.includes('id="first-use"'));
     assert.ok(html.includes('href="help"'));
+    assert.match(html,/<meta name="description" content="[^"]{40,}"/);
   }
 });
 
