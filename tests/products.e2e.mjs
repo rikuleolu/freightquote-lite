@@ -1,7 +1,7 @@
 // QA only: uses the same optional Playwright setup as browser.e2e.mjs.
 import assert from 'node:assert/strict';
 import {createServer} from 'node:http';
-import {readFile,writeFile,mkdir,stat} from 'node:fs/promises';
+import {readFile,writeFile,mkdir} from 'node:fs/promises';
 import {resolve,join,extname,relative} from 'node:path';
 import {pathToFileURL} from 'node:url';
 const {chromium}=await import(process.env.PLAYWRIGHT_MODULE?pathToFileURL(process.env.PLAYWRIGHT_MODULE).href:'playwright');
@@ -30,12 +30,19 @@ try{
   const page=await context.newPage();page.setDefaultTimeout(10000);
   const errors=[];page.on('pageerror',e=>errors.push(e.message));
   const requests=[];context.on('request',r=>requests.push(r.url()));
-  async function step(name,fn){await fn();results.push({name,status:'PASS'});console.log('PASS',name);}
+  async function step(name,fn){
+    try{await fn();results.push({name,status:'PASS'});console.log('PASS',name);}
+    catch(error){results.push({name,status:'FAIL',error:error.message});throw error;}
+  }
   async function offlineFile(name){
     const archive=name.replace('.html','.zip');
-    const zip=process.env.QA_BASE_URL
-      ?await (await context.request.get(base+'/downloads/'+archive)).body()
-      :await readFile(join(root,'downloads',archive));
+    let zip;
+    if(process.env.QA_BASE_URL){
+      const response=await context.request.get(base+'/downloads/'+archive);
+      assert.equal(response.status(),200,archive);
+      zip=await response.body();
+    }else zip=await readFile(join(root,'downloads',archive));
+    await writeFile(join(output,archive),zip);
     assert.equal(zip.readUInt32LE(0),0x04034b50);
     assert.equal(zip.readUInt16LE(8),0);
     const start=30+zip.readUInt16LE(26)+zip.readUInt16LE(28);
@@ -45,22 +52,40 @@ try{
     const file=join(output,'unpacked-'+name);
     await writeFile(file,html);return pathToFileURL(file).href;
   }
-  await step('three offers, pending purchase and every product link resolves',async()=>{
+  await step('three offers link to current sales pages; only trial purchases remain disabled',async()=>{
     await page.goto(base+'/products');
     assert.equal(await page.locator('.card').count(),3);
-    for(const id of ['template','freight','solo']){
-      await page.goto(base+'/buy-'+id);
+    const catalogLinks=await page.locator('.card a[href]').evaluateAll(as=>as.map(a=>a.getAttribute('href')));
+    for(const path of ['template-kit-zh','buy-freight','buy-solo']){
+      assert.ok(catalogLinks.some(href=>new URL(href,base).pathname==='/'+path),path);
+    }
+    for(const id of ['freight','solo']){
+      await page.goto(new URL(catalogLinks.find(href=>new URL(href,base).pathname==='/buy-'+id),base).href);
       assert.equal(await page.locator('button:disabled').count(),1);
       assert.equal(await page.locator('form').count(),0);
+      assert.equal(await page.locator('a[href*="stripe.com"]').count(),0);
+    }
+    for(const path of ['products','template-demo','template-kit-zh','buy-freight','buy-solo','product-terms']){
+      await page.goto(base+'/'+path);
       for(const href of await page.locator('a[href]').evaluateAll(as=>as.map(a=>a.getAttribute('href')))){
-        if(href.startsWith('#')||href.startsWith('mailto:'))continue;
-        const response=await context.request.get(new URL(href,page.url()).href);
+        const url=new URL(href,page.url());
+        // Inspect external links without opening a live checkout or sending mail.
+        if(url.origin!==new URL(base).origin||href.startsWith('#'))continue;
+        const response=await context.request.get(url.href);
         assert.equal(response.status(),200,href);
+      }
+    }
+    for(const locale of ['ja','zh','en']){
+      await page.goto(base+'/template-kit-'+locale);
+      const checkout=page.locator('a[href^="https://buy.stripe.com/"]');
+      assert.ok(await checkout.count()>0);
+      for(const href of await checkout.evaluateAll(as=>as.map(a=>a.href))){
+        assert.equal(href,'https://buy.stripe.com/4gMbJ06dfgkR0Bv9KZbbG00');
       }
     }
   });
   await step('desktop and mobile catalog/demo layouts have no horizontal overflow',async()=>{
-    for(const width of [390,1440])for(const path of ['products','demo-freight','demo-solo','buy-freight']){
+    for(const width of [390,1440])for(const path of ['products','template-demo','demo-freight','demo-solo','buy-freight','buy-solo','template-kit-zh','product-terms']){
       await page.setViewportSize({width,height:900});await page.goto(base+'/'+path);
       assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),path+' '+width);
       await page.screenshot({path:join(output,`${path}-${width}.png`),fullPage:true});
@@ -100,6 +125,8 @@ try{
       offline.on('request',r=>{if(!r.url().startsWith('file:')&&!r.url().startsWith('blob:'))external.push(r.url());});
       offline.on('pageerror',e=>offlineErrors.push(e.message));
       await offline.goto(await offlineFile(file));
+      assert.deepEqual(offlineErrors,[]);
+      assert.equal(await offline.locator('[data-result=price]').innerText(),kind==='freight'?'JPY 87,500':'JPY 78,750');
       await offline.locator('[name=customer]').fill('SYNTHETIC <script>alert(1)</script>');
       await offline.locator('[name=margin]').fill('25');
       const expected=await offline.locator('[data-result=price]').innerText();
@@ -109,6 +136,11 @@ try{
       assert.equal(await offline.locator('[name=customer]').inputValue(),'SYNTHETIC <script>alert(1)</script>');
       assert.equal(await offline.locator('[data-result=price]').innerText(),expected);
       assert.equal(await offline.locator('#customer-name script').count(),0);
+      const csvPromise=offline.waitForEvent('download');await offline.locator('#export').click();
+      const csvFile=join(output,kind+'-offline.csv');await (await csvPromise).saveAs(csvFile);
+      const csv=await readFile(csvFile,'utf8');
+      assert.ok(csv.includes('SYNTHETIC <script>alert(1)</script>'));
+      assert.doesNotMatch(csv,/internal|margin|profit/i);
       assert.deepEqual(offlineErrors,[]);assert.deepEqual(external,[]);
       await offline.close();
     }
@@ -125,6 +157,6 @@ try{
   });
   assert.deepEqual(errors,[]);
 }finally{
-  await writeFile(join(output,'results.json'),JSON.stringify({base,results},null,2));
+  await writeFile(join(output,'results.json'),JSON.stringify({base,checkedAt:new Date().toISOString(),results},null,2));
   await browser?.close();server.close();
 }
