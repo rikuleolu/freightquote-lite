@@ -34,6 +34,12 @@ const cases = [
   ['/solo-download', 'downloads/solo-quote.zip'],
   ['/tool-purchase-terms', 'Freight Cost Workbench'],
 ];
+for(const lang of ['ja','zh','en']){
+  cases.push([`/products-${lang}`,'Freight Cost Workbench']);
+  cases.push([`/buy-freight-${lang}`,'https://buy.stripe.com/aFa5kC6dfc4B3NH2ixbbG01']);
+  cases.push([`/buy-solo-${lang}`,'https://buy.stripe.com/28EdR8gRT9Wtac50apbbG02']);
+  cases.push([`/air-parcel-guide-${lang}`,'id="worked-example"']);
+}
 const results=[];
 for(const [path,expected] of cases){
   const response=await fetch(origin+path,{
