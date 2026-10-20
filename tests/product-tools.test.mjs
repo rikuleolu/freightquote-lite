@@ -67,5 +67,5 @@ test('catalog links the existing paid template kit while keeping other checkout 
   assert.match(page,/template-kit-zh/);
   assert.match(page,/另外两款仅供免费试用/);
   const template=await readFile(new URL('template-kit-zh.html',root),'utf8');
-  assert.match(template,/buy\\.stripe\\.com/);
+  assert.ok(template.includes('https://buy.stripe.com/'));
 });
