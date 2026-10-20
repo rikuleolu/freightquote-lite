@@ -1,6 +1,7 @@
 import {cp,copyFile,mkdir,rm,readFile,writeFile} from 'node:fs/promises';
 import {resolve,join} from 'node:path';
 import {buildProducts} from './build-products.mjs';
+import {buildLocalizedStorefront} from './build-localized-storefront.mjs';
 const base=resolve(import.meta.dirname,'..');
 const out=join(base,'dist');
 await rm(out,{recursive:true,force:true});
@@ -87,4 +88,13 @@ if (siteUrl) {
     const html=await readFile(path,'utf8');
     await writeFile(path,html.replace('</head>',`<link rel="canonical" href="${origin}/template-kit-${lang}">\n${alternates}\n</head>`));
   }
+}
+
+// Replace legacy language catalogs only after the shared tools and validated origin exist.
+const localizedOrigin=siteUrl?new URL(siteUrl).origin:'';
+const localizedRoutes=await buildLocalizedStorefront(base,out,localizedOrigin);
+if(localizedOrigin){
+  const path=join(out,'sitemap.xml');
+  const entries=localizedRoutes.map(route=>`  <url><loc>${localizedOrigin}${route}</loc></url>`).join('\n');
+  await writeFile(path,(await readFile(path,'utf8')).replace('</urlset>',entries+'\n</urlset>'));
 }

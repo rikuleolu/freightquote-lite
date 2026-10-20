@@ -30,6 +30,7 @@ jobs:
         run: |
           npm run test:e2e
           npm run test:products
+          node tests/localized-funnel.e2e.mjs
       - name: Retain short-lived synthetic QA evidence
         if: always()
         uses: actions/upload-artifact@v4
