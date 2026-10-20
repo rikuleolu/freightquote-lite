@@ -30,3 +30,16 @@ jobs:
         run: |
           npm run test:e2e
           npm run test:products
+      - name: Export public-source review snapshot
+        if: always() && github.head_ref == 'improve/customer-ready-quotes-20261020'
+        run: |
+          mkdir -p qa-artifacts/review
+          git archive --format=zip --output=qa-artifacts/review/public-source.zip HEAD
+      - name: Retain short-lived synthetic QA evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: review-evidence
+          path: qa-artifacts/
+          retention-days: 1
+          if-no-files-found: ignore
