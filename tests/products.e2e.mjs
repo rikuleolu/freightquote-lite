@@ -52,20 +52,24 @@ try{
     const file=join(output,'unpacked-'+name);
     await writeFile(file,html);return pathToFileURL(file).href;
   }
-  await step('three offers link to current sales pages; only trial purchases remain disabled',async()=>{
+  await step('three offers expose correct distinct checkout, conditions and delivery links',async()=>{
     await page.goto(base+'/products');
     assert.equal(await page.locator('.card').count(),3);
     const catalogLinks=await page.locator('.card a[href]').evaluateAll(as=>as.map(a=>a.getAttribute('href')));
     for(const path of ['template-kit-zh','buy-freight','buy-solo']){
       assert.ok(catalogLinks.some(href=>new URL(href,base).pathname==='/'+path),path);
     }
+    const checkouts={freight:'https://buy.stripe.com/aFa5kC6dfc4B3NH2ixbbG01',solo:'https://buy.stripe.com/28EdR8gRT9Wtac50apbbG02'};
     for(const id of ['freight','solo']){
       await page.goto(new URL(catalogLinks.find(href=>new URL(href,base).pathname==='/buy-'+id),base).href);
-      assert.equal(await page.locator('button:disabled').count(),1);
+      assert.equal(await page.locator('button:disabled').count(),0);
       assert.equal(await page.locator('form').count(),0);
-      assert.equal(await page.locator('a[href*="stripe.com"]').count(),0);
+      assert.equal(await page.locator('a[data-checkout]').count(),1);
+      assert.equal(await page.locator('a[data-checkout]').getAttribute('href'),checkouts[id]);
+      assert.ok(await page.locator(`a[href="${id}-download"]`).count()>0);
+      assert.ok(await page.locator('a[href="tool-purchase-terms"]').count()>0);
     }
-    for(const path of ['products','template-demo','template-kit-zh','buy-freight','buy-solo','product-terms']){
+    for(const path of ['products','template-demo','template-kit-zh','buy-freight','buy-solo','product-terms','tool-purchase-terms','freight-download','solo-download']){
       await page.goto(base+'/'+path);
       for(const href of await page.locator('a[href]').evaluateAll(as=>as.map(a=>a.getAttribute('href')))){
         const url=new URL(href,page.url());
@@ -85,7 +89,7 @@ try{
     }
   });
   await step('desktop and mobile catalog/demo layouts have no horizontal overflow',async()=>{
-    for(const width of [390,1440])for(const path of ['products','template-demo','demo-freight','demo-solo','buy-freight','buy-solo','template-kit-zh','product-terms']){
+    for(const width of [390,1440])for(const path of ['products','template-demo','demo-freight','demo-solo','buy-freight','buy-solo','template-kit-zh','product-terms','tool-purchase-terms','freight-download','solo-download']){
       await page.setViewportSize({width,height:900});await page.goto(base+'/'+path);
       assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),path+' '+width);
       await page.screenshot({path:join(output,`${path}-${width}.png`),fullPage:true});

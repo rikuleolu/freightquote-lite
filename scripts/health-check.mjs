@@ -25,10 +25,13 @@ const cases = [
   ['/products', 'Freight Cost Workbench'],
   ['/demo-freight', '計費重量'],
   ['/demo-solo', 'Solo Project Quote'],
-  ['/buy-freight', '<button disabled>'],
-  ['/buy-solo', '<button disabled>'],
+  ['/buy-freight', 'https://buy.stripe.com/aFa5kC6dfc4B3NH2ixbbG01'],
+  ['/buy-solo', 'https://buy.stripe.com/28EdR8gRT9Wtac50apbbG02'],
   ['/product-terms', '商品・返品条件'],
   ['/template-demo', 'quote-ja-sample.zip'],
+  ['/freight-download', 'downloads/freight-workbench.zip'],
+  ['/solo-download', 'downloads/solo-quote.zip'],
+  ['/tool-purchase-terms', 'Freight Cost Workbench'],
 ];
 const results=[];
 for(const [path,expected] of cases){

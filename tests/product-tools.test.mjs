@@ -65,15 +65,15 @@ test('CSV neutralizes spreadsheet formulas, quotes and line breaks',()=>{
   assert.equal(csvCell(' \t+123'),'"\' \t+123"');
   assert.equal(csvCell('A "B"\nC'),'"A ""B""\nC"');
 });
-test('three tools ship real files and both trial tools have fail-closed purchases',async()=>{
+test('three tools ship real files and both paid tools retain public trials and disclosures',async()=>{
   const root=new URL('../dist/',import.meta.url);
   for(const id of ['freight','solo']){
     const html=await readFile(new URL(`buy-${id}.html`,root),'utf8');
-    assert.match(html,/販売準備中/);
-    assert.match(html,/<button[^>]*disabled/);
+    assert.match(html,/data-checkout/);
     assert.match(html,/commerce-disclosure/);
     assert.match(html,/7日/);
-    assert.doesNotMatch(html,/<form|buy\.stripe\.com|checkout\.stripe\.com|sk_live_|sk_test_|pk_live_/i);
+    assert.match(html,/tool-purchase-terms/);
+    assert.doesNotMatch(html,/<form|sk_live_|sk_test_|pk_live_/i);
   }
   for(const file of ['downloads/FreightQuote-Template-Kit.zip','downloads/quote-ja-sample.zip','downloads/freight-workbench.zip','downloads/solo-quote.zip','samples/freight-example.txt','samples/solo-example.txt'])
     assert.ok((await stat(new URL(file,root))).size>150);
@@ -87,12 +87,11 @@ test('three tools ship real files and both trial tools have fail-closed purchase
   }
 });
 
-
-test('catalog links the existing paid template kit while keeping other checkout closed',async()=>{
+test('catalog preserves the original template checkout and states nonexclusive file access',async()=>{
   const root=new URL('../dist/',import.meta.url);
   const page=await readFile(new URL('products.html',root),'utf8');
   assert.match(page,/template-kit-zh/);
-  assert.match(page,/另外两款仅供免费试用/);
+  assert.match(page,/完整文件也可免费取得/);
   const template=await readFile(new URL('template-kit-zh.html',root),'utf8');
-  assert.ok(template.includes('https://buy.stripe.com/'));
+  assert.ok(template.includes('https://buy.stripe.com/4gMbJ06dfgkR0Bv9KZbbG00'));
 });
