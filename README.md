@@ -2,9 +2,9 @@
 
 ## Three working digital tools
 
-[Try the product catalog](https://freightquote-lite.pages.dev/products): the existing JPY 980 one-time FreightQuote Template Kit uses its separate canonical Stripe sales pages; Freight Cost Workbench (proposed JPY 1,480) and Solo Project Quote (proposed JPY 980) have working offline ZIP tools, free demos, customer CSV/PDF, and disabled checkout until merchant-specific payment and fulfilment are verified. They are **not** claimed as paid products currently on sale.
+[Try the product catalog](https://freightquote-lite.pages.dev/products): FreightQuote Template Kit (JPY 980), [Freight Cost Workbench](https://freightquote-lite.pages.dev/buy-freight) (JPY 1,480) and [Solo Project Quote](https://freightquote-lite.pages.dev/buy-solo) (JPY 980) have separate one-time Stripe purchase links. The two tools include online demos, offline ZIPs, customer CSV/PDF and internal save/reopen. Full files remain publicly available without payment; the purchase is for the packaged files and bounded file-use assistance, not exclusive access or locked features. See [tool conditions](https://freightquote-lite.pages.dev/tool-purchase-terms) and the [Stripe release record](docs/STRIPE_TOOLS_LAUNCH_20261020.md).
 
-No new hosting subscriptions or runtime libraries are required. Free samples and full trial files are available without an account; a successful download must not be treated as proof of payment.
+No new hosting subscriptions or runtime libraries are required. Free samples and full trial files are available without an account; a successful download must not be treated as proof of payment. Native payment-link configuration, website/browser checks, actual customer payment and bank settlement are separate evidence categories. No live card was charged for testing; sandbox transaction testing remains unperformed for the two new offers.
 
 ## v0.2 public operating release
 
@@ -58,7 +58,7 @@ See [docs/DEPLOY.md](docs/DEPLOY.md) for GitHub → Cloudflare Pages Git deploym
 
 Use the separate repository for this project — **do not use or alter any LuAIOS repository**. Read [AGENTS.md](AGENTS.md) and [docs/CODEX_CLOUD_TASK.md](docs/CODEX_CLOUD_TASK.md). The independent repository is [rikuleolu/freightquote-lite](https://github.com/rikuleolu/freightquote-lite), initially private. The source is public and deployed through Cloudflare Pages. An independent Codex Cloud environment is published for this repository only; fresh-session acceptance on Node 22.23.3 passed 14 code checks, 13 browser scenarios and six PDF checks on 2026-10-20. The cloud proxy denied production-site access (CONNECT 403), so public HTTPS verification is recorded separately from the cloud-local suite.
 
-## Independently reproduced validation
+## Initial-release validation (historical)
 
 - `npm run check`: 14/14 tests passed, both default and SEO/analytics-ready builds.
 - 13 browser scenarios passed in isolated headless Microsoft Edge: all languages/currencies, confirmation/cancel flows, invalid inputs, 50 rows, text injection, reload/storage/network checks, and 320/390/768/1440px layouts.
@@ -67,7 +67,7 @@ Use the separate repository for this project — **do not use or alter any LuAIO
 - Local runtime: Node 24.19.0. Cloudflare deployment independently ran all 14 checks on Node 22.22.0 and passed. The real HTTPS site passed the 13 browser scenarios and six PDF assertions; production app/calculator files matched the reviewed source.
 - **Verified after launch:** both the launch PR and its merged main commit passed GitHub Actions. Eight additional production checks passed, including single-beacon injection, three-language disclosure, cookie absence, and successful analytics ingestion without synthetic quote fields in request payloads. **Still unverified:** search indexing, natural users or payments. The initial private-repository Actions job was skipped to avoid potential charges; Pages build evidence is separate.
 
-Browser QA is separate from the dependency-free build. Install Playwright **for testing only** (`npm install --no-save --package-lock=false playwright@1.62.1`, then `npx playwright install chromium`) and run `npm run test:e2e`. It starts a loopback-only server and uses an isolated profile. `BROWSER_CHANNEL=msedge` selects an installed Edge; `PLAYWRIGHT_MODULE` can point at an already installed Playwright `index.mjs`. PDFs/screenshots go into ignored `qa-artifacts/`, or `QA_OUTPUT`.
+Browser QA is separate from the dependency-free build. Install Playwright **for testing only** (`npm install --no-save --package-lock=false playwright@1.62.1`, then `npx playwright install chromium`) and run `BROWSER_CHANNEL=chromium npm run test:e2e` and `BROWSER_CHANNEL=chromium npm run test:products`. They use a loopback-only server and an isolated profile. `BROWSER_CHANNEL=msedge` selects an installed Edge; `PLAYWRIGHT_MODULE` can point at an already installed Playwright `index.mjs`. PDFs/screenshots go into ignored `qa-artifacts/`, or `QA_OUTPUT`. The public-repository CI also runs these browser suites with an ephemeral QA-only installation; see its actual run logs for current results.
 
 For independent PDF assertions, install the QA-only Python package `pypdf`, then run `python tests/check-pdfs.py qa-artifacts`. Automated results do not replace viewing the PDFs.
 
@@ -77,7 +77,7 @@ For independent PDF assertions, install the QA-only Python package `pypdf`, then
 - No fetched carrier prices or quote uploads. The default build makes no external requests; production additionally uses the disclosed Cloudflare page-analytics beacon.
 - Quote entries are kept in page memory and are cleared when the tab refreshes.
 - Customer print view does not include internal costs or margin.
-- Production uses disclosed Cloudflare Web Analytics with `CF_ANALYTICS=1`, a narrowly scoped CSP, and verified ingestion. The initial dashboard has insufficient data; test visits are not evidence of demand. No payments are connected. Analytics does not measure quote or payment conversion.
+- Production uses disclosed Cloudflare Web Analytics with `CF_ANALYTICS=1`, a narrowly scoped CSP, and verified ingestion. Test visits are not evidence of demand. Stripe handles payments through separate purchase pages; page analytics does not measure quote fields or prove payment conversion.
 
 ## Licensing
 
