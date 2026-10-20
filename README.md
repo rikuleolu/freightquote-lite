@@ -1,5 +1,9 @@
 # FreightQuote Lite — zero-cost open-source MVP
 
+## Three-product evaluation
+
+The new `/products` directory contains the existing multilingual template kit and two new offline tools: Freight Cost Workbench and Solo Project Quote. Each has a demonstration, sample, full evaluation download and purchase-condition page. **Sales remain closed; no payment integration or orders are enabled.** See [product scope, checks and sales gates](docs/PRODUCT_EXPERIMENT.md). Run `npm run check` and the optional `npm run test:products` browser suite.
+
 ## v0.2 public operating release
 
 The free site includes [Japanese](https://freightquote-lite.pages.dev/guide-ja), [Chinese](https://freightquote-lite.pages.dev/guide-zh) and [English](https://freightquote-lite.pages.dev/guide-en) workflow guides, customer-only downloadable CSV examples and a practical FAQ. Language-specific entry links use `?lang=ja`, `?lang=zh` or `?lang=en`. Quote data stays local and is not auto-saved.

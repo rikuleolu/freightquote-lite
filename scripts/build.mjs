@@ -1,5 +1,6 @@
 import {cp,copyFile,mkdir,rm,readFile,writeFile} from 'node:fs/promises';
 import {resolve,join} from 'node:path';
+import {buildProducts} from './build-products.mjs';
 const base=resolve(import.meta.dirname,'..');
 const out=join(base,'dist');
 await rm(out,{recursive:true,force:true});
@@ -7,6 +8,7 @@ await mkdir(out,{recursive:true});
 await cp(join(base,'site'),out,{recursive:true});
 await mkdir(join(out,'lib'),{recursive:true});
 await copyFile(join(base,'src','calculator.mjs'),join(out,'lib','calculator.mjs'));
+await buildProducts(base,out);
 console.log('Built static site: dist/ (no dependencies or API calls)');
 
 // Dashboard-managed Pages analytics is opt-in. The default remains network-silent.

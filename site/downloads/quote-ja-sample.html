@@ -1,0 +1,95 @@
+<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>国際物流 見積書</title>
+
+<style>
+
+*{box-sizing:border-box}body{margin:0;background:#eef1ef;font:14px/1.65 Arial,"Yu Gothic","Microsoft Yahei",sans-serif;color:#25352f}
+
+nav{padding:16px;max-width:900px;margin:auto}nav p{margin:0 0 10px}button{padding:10px 16px;margin:4px 8px 4px 0;border:0;border-radius:4px;background:#173a35;color:white;font:inherit;cursor:pointer}
+
+main{max-width:850px;background:white;margin:12px auto 36px;padding:48px;border-top:8px solid #173a35}
+
+.tag{font-size:11px;letter-spacing:.15em;color:#173a35}h1{font-size:28px;color:#173a35;margin:10px 0 30px}
+
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:22px}label{display:block;min-width:0}label span{font-size:11px;color:#66766f;display:block}
+
+input,textarea{border:0;border-bottom:1px solid #c9d6cf;border-radius:0;background:#f6f8f6;color:inherit;font:inherit;width:100%;padding:6px 4px;min-width:0}
+
+input:focus,textarea:focus{outline:2px solid #173a35}textarea{height:100px;resize:vertical}table{width:100%;border-collapse:collapse;margin:32px 0 18px;table-layout:fixed}
+
+th{background:#173a35;color:white;font-weight:500;text-align:left;padding:8px;font-size:12px}td{padding:8px 4px;border-bottom:1px solid #dfe5e1}th:first-child{width:40%}th:nth-child(2){width:12%}
+
+.total{display:flex;justify-content:flex-end;align-items:center;gap:18px;font-size:21px;font-weight:bold;color:#173a35;margin:20px 0 30px}.total input{max-width:180px;text-align:right}
+
+footer{border-top:1px solid #ddd;margin-top:28px;padding-top:12px;font-size:10px;color:#66766f}
+
+.print-value{display:none}
+
+@media(max-width:600px){main{margin:0;padding:20px}.grid{grid-template-columns:1fr}td,th{font-size:10px;padding:5px 2px}input{font-size:12px}}
+
+@media print{@page{size:A4;margin:14mm}body{background:white;font-size:11px}nav{display:none}main{margin:0;padding:20px;max-width:none}input,textarea{display:none}.print-value{display:block;white-space:pre-wrap;overflow-wrap:anywhere;min-height:1em}.grid{grid-template-columns:1fr 1fr}.grid label,tr{break-inside:avoid}thead{display:table-header-group}th{background:white;color:#173a35;border-bottom:2px solid #173a35}h1{font-size:24px}footer{font-size:9px}}
+
+</style></head><body><nav aria-label="Editor controls"><p>編集用テンプレート。金額と合計は手動で入力・確認してください。自動計算・税計算・自動保存はありません。</p><button id="save">編集内容をHTML保存</button><button id="print">印刷 / PDF保存</button></nav>
+
+<main><div class="tag">FREIGHTQUOTE TEMPLATE KIT · FOREST</div><h1>国際物流 見積書</h1><div class="grid">
+
+<label><span>発行元</span><input id="issuer" aria-label="発行元" value="Demo Logistics"></label><label><span>宛先</span><input id="customer" aria-label="宛先" value="Example Customer"></label>
+
+<label><span>見積番号</span><input id="reference" aria-label="見積番号" value="DEMO-001"></label><label><span>輸送ルート</span><input id="route" aria-label="輸送ルート" value="Osaka → Shanghai"></label>
+
+<label><span>有効期限</span><input id="validity" aria-label="有効期限" value="YYYY-MM-DD"></label><label><span>通貨</span><input id="currency" aria-label="通貨" value="JPY"></label>
+
+<label><span>連絡先</span><input id="contact" aria-label="連絡先" value="example@example.com"></label></div><table><thead><tr><th>項目</th><th>数量</th><th>単価</th><th>金額</th></tr></thead><tbody><tr><td><input aria-label="項目 1" value="海上運賃"></td><td><input aria-label="数量 1" value="1"></td><td><input aria-label="単価 1" value="61,000"></td><td><input aria-label="金額 1" value="61,000"></td></tr><tr><td><input aria-label="項目 2" value="取扱料"></td><td><input aria-label="数量 2" value="1"></td><td><input aria-label="単価 2" value="11,000"></td><td><input aria-label="金額 2" value="11,000"></td></tr><tr><td><input aria-label="項目 3" value="書類費用"></td><td><input aria-label="数量 3" value="1"></td><td><input aria-label="単価 3" value="5,500"></td><td><input aria-label="金額 3" value="5,500"></td></tr></tbody></table><div class="total"><span>合計</span><input id="total" aria-label="合計" value="77,500"></div><label><span>条件・除外事項</span><textarea id="terms" maxlength="2000">参考見積りです。税金、運送範囲、別途費用及び契約条件は別途確認してください。</textarea></label><footer>FreightQuote Template Kit · <span id="footer-currency">JPY</span></footer></main><script>
+
+// Print mirrors wrap instead of clipping native input and textarea values.
+
+const syncPrint=()=>{
+
+ document.querySelectorAll('.print-value').forEach(node=>node.remove());
+
+ document.querySelectorAll('input,textarea').forEach(field=>{
+
+  const value=document.createElement('span');
+
+  value.className='print-value';
+
+  value.textContent=field.value;
+
+  field.after(value);
+
+ });
+
+};
+
+document.addEventListener('input',syncPrint);
+
+window.addEventListener('beforeprint',syncPrint);
+
+syncPrint();
+
+const updateCurrency=()=>document.getElementById('footer-currency').textContent=document.getElementById('currency').value;
+
+document.getElementById('currency').addEventListener('input',updateCurrency);
+
+updateCurrency();
+
+document.getElementById('print').addEventListener('click',()=>window.print());
+
+document.getElementById('save').addEventListener('click',()=>{
+
+ const clone=document.documentElement.cloneNode(true);
+
+ document.querySelectorAll('input').forEach((field,i)=>clone.querySelectorAll('input')[i].setAttribute('value',field.value));
+
+ document.querySelectorAll('textarea').forEach((field,i)=>clone.querySelectorAll('textarea')[i].textContent=field.value);
+
+ const blob=new Blob(['<!doctype html>\n'+clone.outerHTML],{type:'text/html;charset=utf-8'});
+
+ const url=URL.createObjectURL(blob),link=document.createElement('a');
+
+ link.href=url;link.download='quotation-edited.html';link.click();
+
+ setTimeout(()=>URL.revokeObjectURL(url),1000);
+
+});
+
+</script></body></html>
