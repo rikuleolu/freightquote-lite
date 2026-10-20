@@ -1,6 +1,7 @@
 export const launchCopy = {
   "ja": {
     "navResources": "ガイド・サンプル",
+    "navProducts": "ツールを見る",
     "statApi": "会員登録",
     "footerNote": "見積作成の補助ツールです。実運賃・税額・契約条件は別途ご確認ください。",
     "openCopy": "基本の見積作成・粗利計算・PDF出力は無料。MITライセンスのソースを公開しています。",
@@ -42,6 +43,7 @@ export const launchCopy = {
   },
   "zh": {
     "navResources": "指南与示例",
+    "navProducts": "更多工具",
     "statApi": "账号注册",
     "footerNote": "本工具辅助编制报价；实际运价、税额和合同条件需另行核实。",
     "openCopy": "基础报价、毛利计算和 PDF 导出免费使用，源码按 MIT 协议公开。",
@@ -83,6 +85,7 @@ export const launchCopy = {
   },
   "en": {
     "navResources": "Guides & samples",
+    "navProducts": "More tools",
     "statApi": "Accounts needed",
     "footerNote": "A quotation preparation tool. Confirm actual rates, taxes and contract terms separately.",
     "openCopy": "Core quotations, margin calculations and PDF export are free. The source is available under the MIT license.",
