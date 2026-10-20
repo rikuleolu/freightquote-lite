@@ -16,12 +16,12 @@ export const launchCopy = {
     "feedbackTitle": "必要なテンプレートを教えてください",
     "feedbackBody": "ロゴ欄、追加項目、見積条件など、必要な改善を公開Issueで受け付けます。顧客情報や実際の見積は送らないでください。",
     "requestLink": "テンプレートの要望を送る",
-    "offerTitle": "まずは無料版を、仕事の流れに。",
-    "offerBody": "有料テンプレートは準備中です。現在は販売・予約注文・決済を受け付けていません。公開時に内容、価格、提供方法を明記します。",
+    "offerTitle": "会社の書式で、見積書を。",
+    "offerBody": "3言語・3配色のHTMLテンプレート9個と説明書を980円で。買い切り、金額は手動入力。無料計算ツールは引き続き無料です。",
     "freePrice": "¥0",
     "freeLabel": "無料の基本ツール",
     "freeIncludes": "3言語 · 3通貨 · 最大50項目 · 顧客向けPDF",
-    "offerStatus": "有料商品の販売前",
+    "offerStatus": "テンプレート販売中 · 980円",
     "faqTitle": "よくある質問",
     "faqLabel": "BEFORE YOU SEND",
     "guideSubtitle": "原価を分けて確認し、顧客には販売価格だけを渡す。",
@@ -37,7 +37,8 @@ export const launchCopy = {
     "faqQ5": "粗利率と値入率は同じですか？",
     "faqA5": "本ツールの粗利率は（販売合計−仕入合計）÷販売合計です。原価100、売価125なら粗利25、粗利率20%。原価に対する上乗せ率25%とは異なります。",
     "faqQ6": "PDFはどこに保存されますか？",
-    "faqA6": "ブラウザの印刷画面で「PDFとして保存」を選びます。送付前に通貨、金額、改ページと不要なヘッダーを確認してください。スマートフォンではOSの印刷・共有メニューにより操作が異なります。"
+    "faqA6": "ブラウザの印刷画面で「PDFとして保存」を選びます。送付前に通貨、金額、改ページと不要なヘッダーを確認してください。スマートフォンではOSの印刷・共有メニューにより操作が異なります。",
+    "kitLink": "内容・購入条件を見る"
   },
   "zh": {
     "navResources": "指南与示例",
@@ -56,12 +57,12 @@ export const launchCopy = {
     "feedbackTitle": "告诉我们你需要什么模板",
     "feedbackBody": "通过公开 Issue 提出公司标识、额外字段或报价条款等需求。请勿提交客户信息或真实报价资料。",
     "requestLink": "提出模板需求",
-    "offerTitle": "先让免费版融入你的工作。",
-    "offerBody": "付费模板尚在准备，目前不销售、不接受预订或付款。正式推出时会明确内容、价格和交付方式。",
+    "offerTitle": "用公司的样式，交付报价。",
+    "offerBody": "三语、三种配色的9份HTML模板及说明书，980日元一次性购买，金额手动填写。原有报价计算工具继续免费。",
     "freePrice": "¥0",
     "freeLabel": "免费基础工具",
     "freeIncludes": "3 种语言 · 3 种币种 · 最多 50 项 · 客户版 PDF",
-    "offerStatus": "付费产品尚未开售",
+    "offerStatus": "模板已开售 · 980日元",
     "faqTitle": "常见问题",
     "faqLabel": "发送报价前",
     "guideSubtitle": "内部核对成本，对客户只展示销售报价。",
@@ -77,7 +78,8 @@ export const launchCopy = {
     "faqQ5": "毛利率和成本加价率一样吗？",
     "faqA5": "本工具毛利率为（报价总额−总成本）÷报价总额。成本 100、售价 125 时，毛利为 25、毛利率为 20%；成本加价率则为 25%，两者不同。",
     "faqQ6": "如何保存 PDF？",
-    "faqA6": "在浏览器打印窗口中选择“另存为 PDF”。发送前检查币种、金额、分页和不需要的页眉页脚。手机的具体操作取决于系统打印或分享菜单。"
+    "faqA6": "在浏览器打印窗口中选择“另存为 PDF”。发送前检查币种、金额、分页和不需要的页眉页脚。手机的具体操作取决于系统打印或分享菜单。",
+    "kitLink": "查看模板与购买条件"
   },
   "en": {
     "navResources": "Guides & samples",
@@ -96,12 +98,12 @@ export const launchCopy = {
     "feedbackTitle": "Tell us which template you need",
     "feedbackBody": "Request a logo field, extra fields or quotation terms in a public issue. Do not include customer information or real quotations.",
     "requestLink": "Request a template",
-    "offerTitle": "Start with the free core.",
-    "offerBody": "Paid templates are in preparation. We are not taking orders, preorders or payments. Contents, price and delivery will be stated when a product launches.",
+    "offerTitle": "A quotation in your company’s style.",
+    "offerBody": "Nine HTML templates in three languages and three palettes, with a guide. JPY 980 once; amounts are entered manually. The calculator remains free.",
     "freePrice": "¥0",
     "freeLabel": "Free core tool",
     "freeIncludes": "3 languages · 3 currencies · Up to 50 lines · Customer PDF",
-    "offerStatus": "Paid products not on sale",
+    "offerStatus": "Templates available · JPY 980",
     "faqTitle": "Frequently asked questions",
     "faqLabel": "BEFORE YOU SEND",
     "guideSubtitle": "Check costs internally. Share selling prices with the customer.",
@@ -117,6 +119,7 @@ export const launchCopy = {
     "faqQ5": "Is gross margin the same as markup?",
     "faqA5": "Gross margin is (sales minus cost) divided by sales. A cost of 100 and price of 125 gives a profit of 25 and margin of 20%. The markup on cost is 25%; it is a different measure.",
     "faqQ6": "How do I save a PDF?",
-    "faqA6": "Choose Save as PDF in your browser print dialog. Check currency, amounts, page breaks and unwanted headers before sending. On phones, the workflow depends on the operating system print or share menu."
+    "faqA6": "Choose Save as PDF in your browser print dialog. Check currency, amounts, page breaks and unwanted headers before sending. On phones, the workflow depends on the operating system print or share menu.",
+    "kitLink": "View templates and purchase terms"
   }
 };

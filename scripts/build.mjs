@@ -31,7 +31,7 @@ if (siteUrl) {
     throw new Error('SITE_URL must be a bare HTTPS origin with no credentials/path/query.');
   }
   const origin = parsed.origin;
-  const pages = ['/', '/guide-ja', '/guide-zh', '/guide-en'];
+  const pages = ['/', '/guide-ja', '/guide-zh', '/guide-en', '/template-kit-ja', '/template-kit-zh', '/template-kit-en', '/commerce-disclosure', '/purchase-terms', '/privacy-policy'];
   const xml = '<?xml version="1.0" encoding="UTF-8"?>\n' +
     '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
     pages.map(path=>`  <url><loc>${origin}${path}</loc></url>`).join('\n') +
@@ -58,4 +58,10 @@ if (siteUrl) {
     await writeFile(guidePath,guide);
   }
   console.log('SEO metadata generated for', origin);
+  for(const lang of ['ja','zh','en']){
+    const path=join(out,`template-kit-${lang}.html`);
+    const alternates=['ja','zh','en'].map(l=>`<link rel="alternate" hreflang="${l==='zh'?'zh-CN':l}" href="${origin}/template-kit-${l}">`).join('\n');
+    const html=await readFile(path,'utf8');
+    await writeFile(path,html.replace('</head>',`<link rel="canonical" href="${origin}/template-kit-${lang}">\n${alternates}\n</head>`));
+  }
 }
