@@ -4,7 +4,7 @@
 
 The free site includes [Japanese](https://freightquote-lite.pages.dev/guide-ja), [Chinese](https://freightquote-lite.pages.dev/guide-zh) and [English](https://freightquote-lite.pages.dev/guide-en) workflow guides, customer-only downloadable CSV examples and a practical FAQ. Language-specific entry links use `?lang=ja`, `?lang=zh` or `?lang=en`. Quote data stays local and is not auto-saved.
 
-Paid templates are not yet on sale. See the [operating plan](docs/OPERATIONS.md) for the trial scope, availability checks and commercial readiness requirements.
+An optional [FreightQuote Template Kit](https://freightquote-lite.pages.dev/template-kit-en) is available for JPY 980 once: nine HTML templates in three languages and three palettes, with manual amounts and a guide. The calculator remains free. See [purchase conditions](https://freightquote-lite.pages.dev/purchase-terms) and the [operating plan](docs/OPERATIONS.md). Files are shareable; downloads are not evidence of payment.
 
 **Live and independently verified on 2026-10-19: [freightquote-lite.pages.dev](https://freightquote-lite.pages.dev).**
 
@@ -24,7 +24,7 @@ FreightQuote Lite is a no-backend quotation builder for small freight-forwarding
 - Free Cloudflare page analytics is enabled on the production site; a live synthetic-quote privacy check passed on 2026-10-20. The default local build remains analytics-free. See [analytics setup](docs/ANALYTICS.md).
 - CSP and other security headers for supported static hosts.
 
-**Important limits:** This is a drafting calculator, not a live freight rate engine or a tax/customs/compliance calculator. Printed quotes are illustrative and need review before commercial use. No checkout, paid offer or automatic acquisition is live in V1.
+**Important limits:** This is a drafting calculator, not a live freight rate engine or a tax/customs/compliance calculator. Printed quotes need review before commercial use. The separate template checkout does not unlock calculator features or provide live rates. No customer revenue or bank settlement has been verified.
 
 ## Requirements
 

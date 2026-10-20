@@ -15,6 +15,13 @@ const cases = [
   ['/samples/customer-quote-en.csv', 'DEMO,USD'],
   ['/robots.txt', `${origin}/sitemap.xml`],
   ['/sitemap.xml', `${origin}/guide-en</loc>`],
+  ['/template-kit-ja', 'https://buy.stripe.com/4gMbJ06dfgkR0Bv9KZbbG00'],
+  ['/template-kit-zh', 'https://buy.stripe.com/4gMbJ06dfgkR0Bv9KZbbG00'],
+  ['/template-kit-en', 'https://buy.stripe.com/4gMbJ06dfgkR0Bv9KZbbG00'],
+  ['/template-download', 'downloads/FreightQuote-Template-Kit.zip'],
+  ['/commerce-disclosure', 'info@anshin-corp.com'],
+  ['/purchase-terms', 'info@anshin-corp.com'],
+  ['/privacy-policy', 'info@anshin-corp.com'],
 ];
 const results=[];
 for(const [path,expected] of cases){

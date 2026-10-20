@@ -9,7 +9,7 @@ test('deployable dist includes all first-party assets and pure calculator',async
    assert.ok((await stat(join(root,f))).isFile(),`missing ${f}`);
  }
 });
-test('no paid runtime, third party scripts, collection endpoints, or production checkout',async()=>{
+test('calculator has no paid runtime, third party scripts or collection endpoints',async()=>{
  const html=await readFile(join(root,'index.html'),'utf8');
  const app=await readFile(join(root,'app.mjs'),'utf8');
  const header=await readFile(join(root,'_headers'),'utf8');
