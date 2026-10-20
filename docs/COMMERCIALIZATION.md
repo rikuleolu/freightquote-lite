@@ -1,6 +1,6 @@
 # Commercial preparation without fixed subscriptions
 
-The core tool remains free under MIT. No paid product, merchant account, checkout or revenue is active.
+The core tool remains free under MIT. Merchant onboarding is underway; no paid product or checkout is live. Merchant review is tracked privately, not through identity information in this public repository.
 
 ## First offer to validate
 
@@ -10,7 +10,7 @@ Before selling, prepare the actual downloadable files, example output, delivery 
 
 ## Preconditions for taking payment
 
-- The owner selects a merchant provider available to their actual country/entity; verify its current terms, transaction fees and that it requires no fixed subscription. No provider has been selected or opened.
+- Stripe Japan has been selected for merchant onboarding. Verify current terms, transaction fees and actual account review status before selling. Use included Radar Lite protection; do not add Tax, Climate contributions or paid subscriptions.
 - The account holder completes any identity and payout verification themselves. Do not place identity documents or credentials in this repository.
 - Confirm seller identity, contact details, applicable disclosures, delivery and refund obligations for the actual sales destination before publishing an offer. No country or company status is inferred from the interface languages.
 - Use only an authorized real checkout URL after a test transaction/settlement workflow is verified. A payment link is not evidence of a sale; revenue requires reconciliation. Do not start a paid trial or enable automatic billing.

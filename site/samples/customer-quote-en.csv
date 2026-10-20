@@ -1,0 +1,4 @@
+﻿Type,Currency,Description,Quantity,Unit selling price,Amount
+DEMO,USD,Ocean freight,1,520.00,520.00
+DEMO,USD,Handling,1,85.00,85.00
+DEMO,USD,Documentation,1,45.00,45.00

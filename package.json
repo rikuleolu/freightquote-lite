@@ -1,6 +1,6 @@
 {
   "name": "freightquote-lite",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "private": true,
   "description": "Zero-dependency browser-based international freight quote generator",
   "type": "module",

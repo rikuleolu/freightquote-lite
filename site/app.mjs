@@ -1,3 +1,4 @@
+import {launchCopy} from './launch-copy.mjs';
 import {calculateQuote, validateQuote, formatMoney} from './lib/calculator.mjs';
 
 const I18N = {
@@ -44,14 +45,19 @@ const I18N = {
     noLines:'Add at least one fee.',invalid:'Check fee descriptions, quantities, and prices. Quantity must be positive and prices nonnegative.',currencyConfirm:'Changing currency clears entered amounts to prevent misquoting. Continue?',resetConfirm:'Clear all quotation details?',printInfo:'In the print dialog, choose “Save as PDF”.',
   },
 };
+for (const locale of ['ja','zh','en']) Object.assign(I18N[locale], launchCopy[locale]);
+const requestedLocale = new URL(location.href).searchParams.get('lang');
+const initialLocale = ['ja','zh','en'].includes(requestedLocale) ? requestedLocale : 'ja';
 const $ = (id) => document.getElementById(id);
 const fields = ['issuer','customer','origin','destination','validity'];
 const localeFormat = {ja:'ja-JP',zh:'zh-CN',en:'en-US'};
-const state = {locale:'ja',currency:'JPY',rows:[{id:1,description:'',qty:'1',cost:'',sell:''}],nextId:2};
+const state = {locale:initialLocale,currency:'JPY',rows:[{id:1,description:'',qty:'1',cost:'',sell:''}],nextId:2};
 const t = (key) => I18N[state.locale][key] ?? key;
 const money = (minor) => formatMoney(minor,state.currency,localeFormat[state.locale]);
 
 function renderLanguage() {
+  document.querySelector('[data-guide-link]').href = `guide-${state.locale}.html`;
+  document.querySelector('[data-sample-link]').href = `samples/customer-quote-${state.locale}.csv`;
   document.documentElement.lang = state.locale === 'zh' ? 'zh-CN' : state.locale;
   document.title = ({ja:'FreightQuote Lite | 無料の国際物流見積書ツール',zh:'FreightQuote Lite | 免费国际物流报价单工具',en:'FreightQuote Lite | Free freight quotation maker'})[state.locale];
   document.querySelector('meta[name=description]').content = ({ja:'国際物流の見積書を無料で作成。ブラウザで運賃と利益を計算し、顧客向けPDFを保存。登録不要・データ送信なし。',zh:'免费的国际货运报价单生成器。浏览器内计算物流费用和毛利，生成客户版 PDF，无需注册，不上传报价数据。',en:'Free freight quotation generator. Calculate logistics pricing and profit in your browser and print a customer PDF. No sign-up or uploads.'})[state.locale];

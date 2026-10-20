@@ -31,14 +31,31 @@ if (siteUrl) {
     throw new Error('SITE_URL must be a bare HTTPS origin with no credentials/path/query.');
   }
   const origin = parsed.origin;
+  const pages = ['/', '/guide-ja.html', '/guide-zh.html', '/guide-en.html'];
   const xml = '<?xml version="1.0" encoding="UTF-8"?>\n' +
-    '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n  <url><loc>' + origin +
-    '/</loc></url>\n</urlset>\n';
+    '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
+    pages.map(path=>`  <url><loc>${origin}${path}</loc></url>`).join('\n') +
+    '\n</urlset>\n';
   await writeFile(join(out,'sitemap.xml'),xml);
   await writeFile(join(out,'robots.txt'),'User-agent: *\nAllow: /\nSitemap: '+origin+'/sitemap.xml\n');
   const indexPath=join(out,'index.html');
   let html=await readFile(indexPath,'utf8');
   html=html.replace('</head>',`  <link rel="canonical" href="${origin}/" />\n  <meta property="og:url" content="${origin}/" />\n  <meta property="og:title" content="FreightQuote Lite | Free freight quote tool" />\n  <meta property="og:description" content="Free multilingual freight quotation and PDF tool. No sign-up, no upload." />\n</head>`);
   await writeFile(indexPath,html);
+  for (const lang of ['ja','zh','en']) {
+    const guidePath=join(out,`guide-${lang}.html`);
+    let guide=await readFile(guidePath,'utf8');
+    const alternates=['ja','zh','en'].map(l=>`<link rel="alternate" hreflang="${l==='zh'?'zh-CN':l}" href="${origin}/guide-${l}.html">`).join('\n');
+    guide=guide.replace('</head>',`<link rel="canonical" href="${origin}/guide-${lang}.html">\n${alternates}\n</head>`);
+    if (analytics==='1') {
+      const notice={
+        ja:'Cloudflare Web Analyticsで閲覧数・参照元・表示速度を集計します。見積内容は送信しません。',
+        zh:'Cloudflare Web Analytics 统计访问、来源和加载性能，不发送报价内容。',
+        en:'Cloudflare Web Analytics measures page views, referrals and loading performance. Quote contents are not sent.',
+      }[lang];
+      guide=guide.replace('</footer>',`<p class="layout small-note">${notice}</p></footer>`);
+    }
+    await writeFile(guidePath,guide);
+  }
   console.log('SEO metadata generated for', origin);
 }
