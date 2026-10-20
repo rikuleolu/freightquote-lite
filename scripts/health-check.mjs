@@ -22,6 +22,13 @@ const cases = [
   ['/commerce-disclosure', 'info@anshin-corp.com'],
   ['/purchase-terms', 'info@anshin-corp.com'],
   ['/privacy-policy', 'info@anshin-corp.com'],
+  ['/products', 'Freight Cost Workbench'],
+  ['/demo-freight', '計費重量'],
+  ['/demo-solo', 'Solo Project Quote'],
+  ['/buy-freight', '<button disabled>'],
+  ['/buy-solo', '<button disabled>'],
+  ['/product-terms', '商品・返品条件'],
+  ['/template-demo', 'quote-ja-sample.zip'],
 ];
 const results=[];
 for(const [path,expected] of cases){
@@ -35,5 +42,23 @@ for(const [path,expected] of cases){
   assert.ok(text.includes(expected),`Unexpected content at ${path}`);
   if(path==='/') assert.ok(response.headers.get('content-security-policy')?.includes("frame-ancestors 'none'"));
   results.push({path,status:response.status,bytes:Buffer.byteLength(text)});
+}
+// Inspect package signatures without opening, executing or uploading any customer data.
+for(const path of [
+  '/downloads/FreightQuote-Template-Kit.zip',
+  '/downloads/freight-workbench.zip',
+  '/downloads/solo-quote.zip',
+  '/downloads/quote-ja-sample.zip',
+]){
+  const response=await fetch(origin+path,{
+    signal:AbortSignal.timeout(20000),
+    headers:{'User-Agent':'FreightQuote-Lite-Health-Check/0.2'},
+    redirect:'error',
+  });
+  assert.equal(response.status,200,path);
+  const bytes=new Uint8Array(await response.arrayBuffer());
+  assert.ok(bytes.length>1000,`Empty or truncated ZIP: ${path}`);
+  assert.deepEqual([...bytes.subarray(0,4)],[0x50,0x4b,0x03,0x04],`Invalid ZIP signature: ${path}`);
+  results.push({path,status:response.status,bytes:bytes.length});
 }
 console.log(JSON.stringify({checkedAt:new Date().toISOString(),origin,results},null,2));

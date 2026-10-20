@@ -24,3 +24,11 @@ test('calculator has no paid runtime, third party scripts or collection endpoint
  assert.match(header,process.env.CF_ANALYTICS==='1' ? /connect-src 'self' https:\/\/cloudflareinsights.com/ : /connect-src 'none'/);
  assert.match(header,/frame-ancestors 'none'/);
 });
+
+test('availability probe checks the two live tools and real ZIP deliveries',async()=>{
+ const script=await readFile(new URL('../scripts/health-check.mjs',import.meta.url),'utf8');
+ for(const route of ['/products','/demo-freight','/demo-solo','/buy-freight','/buy-solo','/product-terms','/template-demo',
+  '/downloads/FreightQuote-Template-Kit.zip','/downloads/freight-workbench.zip','/downloads/solo-quote.zip','/downloads/quote-ja-sample.zip'])
+  assert.ok(script.includes("'" + route + "'"),`health check missing ${route}`);
+ assert.match(script,/0x50,0x4b,0x03,0x04/);
+});
