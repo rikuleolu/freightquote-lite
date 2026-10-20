@@ -9,6 +9,18 @@ await cp(join(base,'site'),out,{recursive:true});
 await mkdir(join(out,'lib'),{recursive:true});
 await copyFile(join(base,'src','calculator.mjs'),join(out,'lib','calculator.mjs'));
 await buildProducts(base,out);
+const productPageDescriptions = {
+  "products": "無料で試せる物流・見積ツール集。三言語の物流見積テンプレート、容積重量・粗利計算、フリーランスの工数と前払額の試算を紹介。",
+  "demo-freight": "貨物の縦横高さ・実重量・換算係数から容積重量と計費重量を試算し、仕入原価と目標粗利率からJPY建ての参考売価を計算。無料デモ。",
+  "demo-solo": "フリーランスの案件見積もりを無料で試算。作業・修正時間、経費、目標粗利率、前受金と残額を計算。税・請求書発行は非対応。",
+  "template-demo": "日中英三言語の物流見積テンプレートの無料サンプル。ブラウザでHTMLを編集して保存し、PDF印刷する方法を確認。"
+};
+for(const [slug,description] of Object.entries(productPageDescriptions)){
+  const file=join(out,`${slug}.html`);
+  const source=await readFile(file,'utf8');
+  if(!source.includes('</head>') || source.includes('name="description"')) throw new Error(`Unexpected product metadata state: ${slug}`);
+  await writeFile(file,source.replace('</head>',`<meta name="description" content="${description}"></head>`));
+}
 console.log('Built static site: dist/ (no dependencies or API calls)');
 
 // Dashboard-managed Pages analytics is opt-in. The default remains network-silent.
@@ -58,6 +70,11 @@ if (siteUrl) {
       guide=guide.replace('</footer>',`<p class="layout small-note">${notice}</p></footer>`);
     }
     await writeFile(guidePath,guide);
+  }
+  for(const slug of Object.keys(productPageDescriptions)){
+    const path=join(out,`${slug}.html`);
+    const html=await readFile(path,'utf8');
+    await writeFile(path,html.replace('</head>',`<link rel="canonical" href="${origin}/${slug}"></head>`));
   }
   console.log('SEO metadata generated for', origin);
   for(const lang of ['ja','zh','en']){
