@@ -1,8 +1,35 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {readFile,stat,readdir} from 'node:fs/promises';
+import {readFile,stat,readdir,mkdir,mkdtemp,writeFile,rm} from 'node:fs/promises';
+import {tmpdir} from 'node:os';
+import {join} from 'node:path';
+import {Script} from 'node:vm';
+import {buildProducts} from '../scripts/build-products.mjs';
 import {freight,service,csvCell} from '../src/product-calculators.mjs';
 import {zipProduct} from '../scripts/zip-product.mjs';
+
+test('offline scripts compile when built from LF or Windows CRLF source',async()=>{
+  const temp=await mkdtemp(join(tmpdir(),'freightquote-build-'));
+  try{
+    for(const newline of ['\n','\r\n']){
+      const base=join(temp,newline==='\n'?'lf':'crlf'),out=join(base,'dist');
+      for(const dir of ['site','src','dist/downloads','dist/lib'])await mkdir(join(base,dir),{recursive:true});
+      for(const file of ['site/products.css','site/product-tools.mjs','src/product-calculators.mjs','src/template-sample.html','LICENSE']){
+        const source=await readFile(new URL('../'+file,import.meta.url),'utf8');
+        await writeFile(join(base,file),source.replace(/\r\n|\r|\n/g,newline));
+      }
+      await buildProducts(base,out);
+      for(const file of ['freight-workbench.zip','solo-quote.zip']){
+        const zip=await readFile(join(out,'downloads',file));
+        const start=30+zip.readUInt16LE(26)+zip.readUInt16LE(28);
+        const html=zip.subarray(start,start+zip.readUInt32LE(18)).toString('utf8');
+        const scripts=[...html.matchAll(/<script>([\s\S]*?)<\/script>/g)];
+        assert.equal(scripts.length,1);
+        assert.doesNotThrow(()=>new Script(scripts[0][1]),file);
+      }
+    }
+  }finally{await rm(temp,{recursive:true,force:true});}
+});
 
 test('ZIP uses standard CRC-32 and repeatable single-file contents',()=>{
   const a=zipProduct('example.html','123456789');
