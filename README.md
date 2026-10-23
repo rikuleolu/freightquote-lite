@@ -1,5 +1,19 @@
 # FreightQuote Lite — zero-cost open-source MVP
 
+## Try one quote / 先完成一张报价 / まず一件の見積
+
+Start with fictional data. No registration or purchase is needed to use the tools.
+
+| Your task | Free entry | Interface |
+| --- | --- | --- |
+| Multiple freight fees; keep costs out of the customer PDF | [中文](https://freightquote-lite.pages.dev/?lang=zh) · [日本語](https://freightquote-lite.pages.dev/?lang=ja) · [English](https://freightquote-lite.pages.dev/?lang=en) | Chinese / Japanese / English |
+| Same-size-carton air/parcel weight, cost and margin | [Freight Cost Workbench](https://freightquote-lite.pages.dev/demo-freight) | Japanese / Chinese |
+| One-off project hours, expenses and planned deposit | [Solo Project Quote](https://freightquote-lite.pages.dev/demo-solo) | Japanese / Chinese |
+
+1. Try a fictional example, then check the calculation and customer PDF before using it in your work. The main calculator does not save on refresh; see [save/reopen help for the offline tools](https://freightquote-lite.pages.dev/help).
+2. [Tell us where you got stuck](https://github.com/rikuleolu/freightquote-lite/issues/new?template=feature_request.md): which tool, intended task, result and missing step. 中文・日本語・English welcome. A GitHub account is required; this is public feedback, so do not attach customer quotes, internal costs or payment details.
+3. If the stated package and file-use help are useful, [compare optional purchases](https://freightquote-lite.pages.dev/products). Full tools remain free; payment does not unlock exclusive features. Purchase problems go privately to the [support contact](https://freightquote-lite.pages.dev/help#feedback), not a public issue.
+
 ## Three working digital tools
 
 [Try the product catalog](https://freightquote-lite.pages.dev/products): FreightQuote Template Kit (JPY 980), [Freight Cost Workbench](https://freightquote-lite.pages.dev/buy-freight) (JPY 1,480) and [Solo Project Quote](https://freightquote-lite.pages.dev/buy-solo) (JPY 980) have separate one-time Stripe purchase links. The two tools include online demos, offline ZIPs, customer CSV/PDF and internal save/reopen. Full files remain publicly available without payment; the purchase is for the packaged files and bounded file-use assistance, not exclusive access or locked features. See [tool conditions](https://freightquote-lite.pages.dev/tool-purchase-terms) and the [Stripe release record](docs/STRIPE_TOOLS_LAUNCH_20261020.md).

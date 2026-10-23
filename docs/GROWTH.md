@@ -2,9 +2,9 @@
 
 **Goal:** get one real organic external visitor, one completed sample quote, one qualified customer conversation and eventually one verified payment — without buying traffic or subscriptions. None are claimed as achieved.
 
-## Launch status (2026-10-20)
+## Launch status (updated 2026-10-23)
 
-The free tool is live at https://freightquote-lite.pages.dev. Source is public at https://github.com/rikuleolu/freightquote-lite. Canonical URL, sitemap, repository links and a public feature-request entry are configured. Search indexing and natural visitors are not yet verified. The drafts below have not been posted externally.
+The free tool is live at https://freightquote-lite.pages.dev. Source is public at https://github.com/rikuleolu/freightquote-lite. Canonical URL, sitemap, repository links and a public workflow-feedback entry are configured. Three optional packages have separate live purchase links: Template Kit (JPY 980), Freight Cost Workbench (JPY 1,480) and Solo Project Quote (JPY 980). Full tools remain free/MIT; purchases cover the stated package and bounded file-use help. Search indexing and natural visitors are not yet verified. The drafts below have not been posted externally.
 
 ## Release checklist
 
@@ -24,9 +24,21 @@ The free tool is live at https://freightquote-lite.pages.dev. Source is public a
 
 ## A simple initial conversion funnel
 
-`Organic discovery → open product → create quote → print PDF → request advanced template → merchant setup and legal review → first real sale`
+`Relevant discovery → choose a free tool → finish a fictional quote → inspect customer PDF → give optional workflow feedback or choose a package → verified payment → file delivery/support → reconcile fees and settlement`
 
-No payment buttons are enabled in V1. A planned ¥980 premium template is only a **market hypothesis**, not an active product. Merchant verification and legally required disclosure must precede opening paid transactions.
+Payment links are enabled for the three published packages. They do not prove that customers want them. Do not describe a public download, a page view, a sandbox payment or an owner's feedback checklist as a sale or customer demand. Track payment completion and bank settlement separately. The new-tool sandbox cases, support receive/reply test and qualified-user validation remain separate acceptance work in issue #18.
+
+## Run the first cycle with the existing account
+
+Use the GitHub README's task-specific demo links and public feedback template as the first owned entry point. The owner has not supplied an external social account, so external distribution is not active. GitHub visibility and SEO metadata do not establish audience reach.
+
+- Daily when the operating host is available: check cloud availability results, three product payment links and narrowly scoped support messages; keep unknown data marked unknown.
+- Review public needs for fit, not just keyword matches. Mailbox automation, OCR and live rate requests do not match these tools. Do not contact authors without the required authorization.
+- Weekly: compare consented workflow feedback and verified orders. Improve one evidenced obstacle rather than generating more products or duplicate pages. Five qualified workflows and one real order are experiment goals, not current counts.
+- If no qualified demand is found after 14 days, reassess audience and distribution; do not claim the business is validated because the software works.
+- External publication requires an approved channel/account and reviewed content. Check the channel's current rules: Hacker News guidelines explicitly prohibit automated posting and generated text, so an automated Show HN campaign is not an available route. Source: https://news.ycombinator.com/newsguidelines.html (checked 2026-10-23).
+
+The operating trial still ends on 2027-01-19. No new fixed cost, purchased traffic, cold/bulk outreach, private lead scraping or artificial engagement.
 
 ## Draft initial launch copy (not posted)
 
