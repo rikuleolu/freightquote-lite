@@ -6,5 +6,5 @@ for(const lang of ['ja','zh','en'])test(`${lang}: template cross-sell describes 
  assert.doesNotMatch(html,/Product showcase only|no orders are accepted|当前不接受订单|注文は受け付けていません/);
  for(const name of ['Freight Cost Workbench','Solo Project Quote'])assert.ok(html.includes(name));
  assert.ok(html.includes(`href="products-${lang}"`));
- assert.ok(html.includes('href="https://buy.stripe.com/4gMbJ06dfgkR0Bv9KZbbG00" data-checkout'));
+ assert.ok(html.includes('href="https://buy.stripe.com/3cI8wO0SV9Wtfwp5uJbbG06" data-checkout'));
 });

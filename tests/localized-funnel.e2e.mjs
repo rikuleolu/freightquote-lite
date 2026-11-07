@@ -15,7 +15,7 @@ const results=[];let browser;
 try{
  browser=await chromium.launch({headless:true,channel:process.env.BROWSER_CHANNEL??'msedge'});
  const context=await browser.newContext({viewport:{width:1440,height:1000}});const page=await context.newPage();page.setDefaultTimeout(10000);const errors=[];page.on('pageerror',e=>errors.push(e.message));
- const checkout={freight:'https://buy.stripe.com/aFa5kC6dfc4B3NH2ixbbG01',solo:'https://buy.stripe.com/28EdR8gRT9Wtac50apbbG02'};
+ const checkout={freight:'https://buy.stripe.com/00wcN4gRTgkRgAt8GVbbG05',solo:'https://buy.stripe.com/dRmdR8bxz2u10Bv7CRbbG07'};
  const checked=new Set();
  for(const lang of ['ja','zh','en']){
   for(const family of ['products','buy-freight','buy-solo','air-parcel-guide']){

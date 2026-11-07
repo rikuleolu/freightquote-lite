@@ -93,5 +93,5 @@ test('catalog preserves the original template checkout and states nonexclusive f
   assert.match(page,/template-kit-zh/);
   assert.match(page,/完整文件也可免费取得/);
   const template=await readFile(new URL('template-kit-zh.html',root),'utf8');
-  assert.ok(template.includes('https://buy.stripe.com/4gMbJ06dfgkR0Bv9KZbbG00'));
+  assert.ok(template.includes('https://buy.stripe.com/3cI8wO0SV9Wtfwp5uJbbG06'));
 });

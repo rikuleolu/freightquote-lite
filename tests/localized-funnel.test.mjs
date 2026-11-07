@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 const read=slug=>readFile(new URL(`../dist/${slug}.html`,import.meta.url),'utf8');
-const links={freight:'https://buy.stripe.com/aFa5kC6dfc4B3NH2ixbbG01',solo:'https://buy.stripe.com/28EdR8gRT9Wtac50apbbG02'};
+const links={freight:'https://buy.stripe.com/00wcN4gRTgkRgAt8GVbbG05',solo:'https://buy.stripe.com/dRmdR8bxz2u10Bv7CRbbG07'};
 for(const lang of ['ja','zh','en']){
   test(`${lang}: existing catalog route describes the three real products, not abandoned concepts`,async()=>{
     const html=await read(`products-${lang}`);
@@ -19,7 +19,7 @@ for(const lang of ['ja','zh','en']){
       assert.equal(url.origin+url.pathname,links[kind]);
       assert.equal(url.searchParams.get('locale'),lang);
       assert.deepEqual([...url.searchParams.keys()],['locale']);
-      for(const token of [kind==='freight'?'1,480':'980','free-vs-paid',`${kind}-download`,'tool-purchase-terms','commerce-disclosure','privacy-policy','help'])assert.ok(html.includes(token),token);
+      for(const token of [kind==='freight'?'700':'480','free-vs-paid',`${kind}-download`,'tool-purchase-terms','commerce-disclosure','privacy-policy','help'])assert.ok(html.includes(token),token);
       assert.doesNotMatch(html,/<form|<script|sk_live_|guaranteed|guarantee a refund|sold out/i);
     }
   });

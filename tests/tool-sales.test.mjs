@@ -19,6 +19,6 @@ test('each new tool has a real, non-authenticating delivery page and ZIP',async(
 
 test('supplemental tool purchase terms disclose both totals and nonexclusive delivery',async()=>{
   const terms=await readFile(new URL('tool-purchase-terms.html',root),'utf8');
-  for(const text of ['Freight Cost Workbench','Solo Project Quote','1,480','980','1パッケージ','7日','Stripe','commerce-disclosure','privacy-policy','免费取得','一次性','info@anshin-corp.com']) assert.ok(terms.includes(text),text);
+  for(const text of ['Freight Cost Workbench','Solo Project Quote','700','480','1パッケージ','7日','Stripe','commerce-disclosure','privacy-policy','免费取得','一次性','info@anshin-corp.com']) assert.ok(terms.includes(text),text);
   assert.doesNotMatch(terms,/無制限|無条件返金|自動メール送信|sk_live_/);
 });

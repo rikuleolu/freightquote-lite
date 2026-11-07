@@ -59,7 +59,7 @@ try{
     for(const path of ['template-kit-zh','buy-freight','buy-solo']){
       assert.ok(catalogLinks.some(href=>new URL(href,base).pathname==='/'+path),path);
     }
-    const checkouts={freight:'https://buy.stripe.com/aFa5kC6dfc4B3NH2ixbbG01',solo:'https://buy.stripe.com/28EdR8gRT9Wtac50apbbG02'};
+    const checkouts={freight:'https://buy.stripe.com/00wcN4gRTgkRgAt8GVbbG05',solo:'https://buy.stripe.com/dRmdR8bxz2u10Bv7CRbbG07'};
     for(const id of ['freight','solo']){
       await page.goto(new URL(catalogLinks.find(href=>new URL(href,base).pathname==='/buy-'+id),base).href);
       assert.equal(await page.locator('button:disabled').count(),0);
@@ -84,7 +84,7 @@ try{
       const checkout=page.locator('a[href^="https://buy.stripe.com/"]');
       assert.ok(await checkout.count()>0);
       for(const href of await checkout.evaluateAll(as=>as.map(a=>a.href))){
-        assert.equal(href,'https://buy.stripe.com/4gMbJ06dfgkR0Bv9KZbbG00');
+        assert.equal(href,'https://buy.stripe.com/3cI8wO0SV9Wtfwp5uJbbG06');
       }
     }
   });

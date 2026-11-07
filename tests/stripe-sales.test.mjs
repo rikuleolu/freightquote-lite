@@ -2,8 +2,8 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 const offers={
-  freight:{url:'https://buy.stripe.com/aFa5kC6dfc4B3NH2ixbbG01',price:'1,480'},
-  solo:{url:'https://buy.stripe.com/28EdR8gRT9Wtac50apbbG02',price:'980'},
+  freight:{url:'https://buy.stripe.com/00wcN4gRTgkRgAt8GVbbG05',price:'700'},
+  solo:{url:'https://buy.stripe.com/dRmdR8bxz2u10Bv7CRbbG07',price:'480'},
 };
 
 test('two tool offers each bind the correct real link, fixed total and distinct delivery',async()=>{

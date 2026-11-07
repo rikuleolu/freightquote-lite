@@ -5,9 +5,9 @@ const tags={ja:'ja',zh:'zh-CN',en:'en'};
 const names={ja:'日本語',zh:'中文',en:'English'};
 const escape=s=>String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;');
 const offers=[
-  {id:'template',name:'FreightQuote Template Kit',price:980,demo:'template-demo',file:'FreightQuote-Template-Kit.zip'},
-  {id:'freight',name:'Freight Cost Workbench',price:1480,demo:'demo-freight',file:'freight-workbench.zip',checkout:'https://buy.stripe.com/aFa5kC6dfc4B3NH2ixbbG01'},
-  {id:'solo',name:'Solo Project Quote',price:980,demo:'demo-solo',file:'solo-quote.zip',checkout:'https://buy.stripe.com/28EdR8gRT9Wtac50apbbG02'}
+  {id:'template',name:'FreightQuote Template Kit',price:480,demo:'template-demo',file:'FreightQuote-Template-Kit.zip'},
+  {id:'freight',name:'Freight Cost Workbench',price:700,demo:'demo-freight',file:'freight-workbench.zip',checkout:'https://buy.stripe.com/00wcN4gRTgkRgAt8GVbbG05'},
+  {id:'solo',name:'Solo Project Quote',price:480,demo:'demo-solo',file:'solo-quote.zip',checkout:'https://buy.stripe.com/dRmdR8bxz2u10Bv7CRbbG07'}
 ];
 const copy={
   ja:{

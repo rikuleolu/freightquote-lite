@@ -15,9 +15,9 @@ const cases = [
   ['/samples/customer-quote-en.csv', 'DEMO,USD'],
   ['/robots.txt', `${origin}/sitemap.xml`],
   ['/sitemap.xml', `${origin}/guide-en</loc>`],
-  ['/template-kit-ja', 'https://buy.stripe.com/4gMbJ06dfgkR0Bv9KZbbG00'],
-  ['/template-kit-zh', 'https://buy.stripe.com/4gMbJ06dfgkR0Bv9KZbbG00'],
-  ['/template-kit-en', 'https://buy.stripe.com/4gMbJ06dfgkR0Bv9KZbbG00'],
+  ['/template-kit-ja', 'https://buy.stripe.com/3cI8wO0SV9Wtfwp5uJbbG06'],
+  ['/template-kit-zh', 'https://buy.stripe.com/3cI8wO0SV9Wtfwp5uJbbG06'],
+  ['/template-kit-en', 'https://buy.stripe.com/3cI8wO0SV9Wtfwp5uJbbG06'],
   ['/template-download', 'downloads/FreightQuote-Template-Kit.zip'],
   ['/commerce-disclosure', 'info@anshin-corp.com'],
   ['/purchase-terms', 'info@anshin-corp.com'],
@@ -26,8 +26,8 @@ const cases = [
   ['/help', 'info@anshin-corp.com'],
   ['/demo-freight', '計費重量'],
   ['/demo-solo', 'Solo Project Quote'],
-  ['/buy-freight', 'https://buy.stripe.com/aFa5kC6dfc4B3NH2ixbbG01'],
-  ['/buy-solo', 'https://buy.stripe.com/28EdR8gRT9Wtac50apbbG02'],
+  ['/buy-freight', 'https://buy.stripe.com/00wcN4gRTgkRgAt8GVbbG05'],
+  ['/buy-solo', 'https://buy.stripe.com/dRmdR8bxz2u10Bv7CRbbG07'],
   ['/product-terms', '商品・返品条件'],
   ['/template-demo', 'quote-ja-sample.zip'],
   ['/freight-download', 'downloads/freight-workbench.zip'],
@@ -36,8 +36,8 @@ const cases = [
 ];
 for(const lang of ['ja','zh','en']){
   cases.push([`/products-${lang}`,'Freight Cost Workbench']);
-  cases.push([`/buy-freight-${lang}`,'https://buy.stripe.com/aFa5kC6dfc4B3NH2ixbbG01']);
-  cases.push([`/buy-solo-${lang}`,'https://buy.stripe.com/28EdR8gRT9Wtac50apbbG02']);
+  cases.push([`/buy-freight-${lang}`,'https://buy.stripe.com/00wcN4gRTgkRgAt8GVbbG05']);
+  cases.push([`/buy-solo-${lang}`,'https://buy.stripe.com/dRmdR8bxz2u10Bv7CRbbG07']);
   cases.push([`/air-parcel-guide-${lang}`,'id="worked-example"']);
 }
 const results=[];
