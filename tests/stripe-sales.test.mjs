@@ -11,6 +11,9 @@ test('two tool offers each bind the correct real link, fixed total and distinct 
     const html=await readFile(new URL(`../dist/buy-${id}.html`,import.meta.url),'utf8');
     const links=[...html.matchAll(/href="(https:\/\/buy\.stripe\.com\/[^"]+)"[^>]*data-checkout/g)].map(m=>m[1]);
     assert.deepEqual(links,[offer.url],id);
+    const totals=[...html.matchAll(/class="price">JPY ([\d,]+)/g)].map(m=>m[1]);
+    assert.ok(totals.length>0,id+' visible total');
+    assert.ok(totals.every(total=>total===offer.price),id+' all visible totals');
     for(const item of [`JPY ${offer.price}`,'1パッケージ','tool-purchase-terms',`${id}-download`,'7日','commerce-disclosure','無料']) assert.ok(html.includes(item),`${id}: ${item}`);
     assert.doesNotMatch(html,/<button[^>]*disabled|現在の請求額は0円|注文不可|注文できません|販売開始後の予定/);
     assert.doesNotMatch(html,/<form|sk_live_|pk_live_|sk_test_|CHECKOUT_SESSION_ID|checkout\.session\.completed/);

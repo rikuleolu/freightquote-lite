@@ -1,6 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile,stat} from 'node:fs/promises';
+import {Script} from 'node:vm';
+import {readZipEntries} from './helpers/zip-entries.mjs';
 const root=new URL('../dist/',import.meta.url);
 
 test('each new tool has a real, non-authenticating delivery page and ZIP',async()=>{
@@ -12,7 +14,13 @@ test('each new tool has a real, non-authenticating delivery page and ZIP',async(
     assert.match(html,/name="robots" content="noindex,nofollow"/);
     assert.doesNotMatch(html,/sk_live_|sk_test_|CHECKOUT_SESSION_ID|localStorage|<script/i);
     const zip=await readFile(new URL(`downloads/${file}`,root));
-    assert.equal(zip.readUInt32LE(0),0x04034b50);
+    const entries=readZipEntries(zip);
+    assert.deepEqual([...entries.keys()],[file.replace('.zip','.html')]);
+    const offline=entries.values().next().value.toString('utf8');
+    assert.doesNotMatch(offline,/localStorage|sessionStorage|document\.cookie|indexedDB|sendBeacon|XMLHttpRequest|\bfetch\s*\(|WebSocket|EventSource|cloudflareinsights|<script[^>]+src=|<(?:link|img|iframe)\b|@import/i,file);
+    const scripts=[...offline.matchAll(/<script>([\s\S]*?)<\/script>/g)];
+    assert.equal(scripts.length,1,file);
+    assert.doesNotThrow(()=>new Script(scripts[0][1]),file);
     assert.ok((await stat(new URL(`downloads/${file}`,root))).size>1000);
   }
 });

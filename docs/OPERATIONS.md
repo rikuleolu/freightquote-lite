@@ -8,7 +8,7 @@ Trial closes on 2027-01-19 (Asia/Shanghai). The free core stays usable. No paid 
 - Localized workflow guides and customer-only CSV examples.
 - Six localized FAQ entries, including data loss on reload, whole-number quantities, currency and print privacy.
 - Public source and a template-demand feedback link. GitHub account needed to file an issue; no customer data belongs in it.
-- Free core plus an optional JPY 980 one-time template kit, with real Stripe checkout, shareable-file delivery and published seller/support/refund terms.
+- Free core plus an optional JPY 480 one-time template kit, with real Stripe checkout, shareable-file delivery and published seller/support/refund terms.
 - Pages Web Analytics, enabled separately by the operator. Read page views, referrers and loading performance without collecting quote fields.
 
 ## Operating cadence
@@ -23,7 +23,7 @@ GitHub scheduling can be delayed, and GitHub may disable scheduled runs after 60
 
 ## Commercial readiness
 
-The template kit has a live one-time payment link. Merchant Payments and Payouts were active at launch; no genuine customer payment or bank settlement has been verified. Payment/refund receipts are enabled. Support uses info@anshin-corp.com; telephone callbacks require a prior email appointment. Details are in the public seller disclosure.
+The repository-configured template offer is JPY 480 once. Native Stripe settings must be checked separately; launch-time evidence is historical and does not verify the current price or account status. Merchant Payments and Payouts were active at launch; no genuine customer payment or bank settlement has been verified. Payment/refund receipts are enabled. Support uses info@anshin-corp.com; telephone callbacks require a prior email appointment. Details are in the public seller disclosure.
 
 Maintain these conditions while operating:
 

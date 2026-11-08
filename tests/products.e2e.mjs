@@ -4,6 +4,7 @@ import {createServer} from 'node:http';
 import {readFile,writeFile,mkdir} from 'node:fs/promises';
 import {resolve,join,extname,relative} from 'node:path';
 import {pathToFileURL} from 'node:url';
+import {readZipEntries} from './helpers/zip-entries.mjs';
 const {chromium}=await import(process.env.PLAYWRIGHT_MODULE?pathToFileURL(process.env.PLAYWRIGHT_MODULE).href:'playwright');
 const root=resolve('dist'), output=resolve(process.env.QA_OUTPUT??'qa-artifacts/products');
 await mkdir(output,{recursive:true});
@@ -206,6 +207,46 @@ try{
     const target=join(output,'template-saved.html');await dl.saveAs(target);await p.goto(pathToFileURL(target).href);
     assert.equal(await p.locator('input').first().inputValue(),'SYNTHETIC Example');
     assert.deepEqual(errs,[]);await p.close();
+  });
+  await step('full Template Kit ZIP: all nine delivered templates edit, save, reopen and print offline',async()=>{
+    const file='FreightQuote-Template-Kit.zip';
+    let zip;
+    if(process.env.QA_BASE_URL){
+      const response=await context.request.get(base+'/downloads/'+file);
+      assert.equal(response.status(),200,file);zip=await response.body();
+    }else zip=await readFile(join(root,'downloads',file));
+    await writeFile(join(output,file),zip);
+    const entries=readZipEntries(zip);
+    const files=[...entries].filter(([name])=>name.endsWith('.html'));
+    assert.equal(files.length,9);
+    const isolated=await browser.newContext({acceptDownloads:true});
+    await isolated.setOffline(true);
+    const p=await isolated.newPage();const external=[],failures=[];
+    p.on('request',r=>{if(!/^(file|blob):/.test(r.url()))external.push(r.url());});
+    p.on('pageerror',e=>failures.push(e.message));
+    for(const [name,data] of files){
+      const short=name.split('/').at(-1);
+      const source=join(output,'full-'+short);
+      await writeFile(source,data);await p.goto(pathToFileURL(source).href);
+      await p.locator('input').first().fill('SYNTHETIC <script>invalid()</script>');
+      await p.locator('#total').fill('12,345');
+      await p.locator('#terms').fill('SYNTHETIC scope\n</textarea><script>invalid()</script>');
+      const promise=p.waitForEvent('download');await p.locator('#save').click();
+      const saved=join(output,'saved-'+short);await (await promise).saveAs(saved);
+      await p.goto(pathToFileURL(saved).href);
+      assert.equal(await p.locator('input').first().inputValue(),'SYNTHETIC <script>invalid()</script>');
+      assert.equal(await p.locator('#total').inputValue(),'12,345');
+      assert.equal(await p.locator('#terms').inputValue(),'SYNTHETIC scope\n</textarea><script>invalid()</script>');
+      assert.equal(await p.locator('script').count(),1);
+      await p.emulateMedia({media:'print'});
+      assert.equal(await p.locator('nav').isVisible(),false);
+      assert.ok((await p.locator('.print-value').allTextContents()).includes('12,345'));
+      await p.pdf({path:join(output,short.replace('.html','.pdf')),format:'A4'});
+      await p.emulateMedia({media:'screen'});
+    }
+    assert.deepEqual(external,[]);assert.deepEqual(failures,[]);
+    assert.deepEqual(await isolated.cookies(),[]);
+    await isolated.close();
   });
   assert.deepEqual(errors,[]);
 }finally{

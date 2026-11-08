@@ -9,6 +9,10 @@ for(const lang of ['ja','zh','en']){
     for(const name of ['FreightQuote Template Kit','Freight Cost Workbench','Solo Project Quote'])assert.ok(html.includes(name),name);
     assert.match(html,new RegExp(`<html lang="${lang==='zh'?'zh-CN':lang}"`));
     for(const slug of [`template-kit-${lang}`,`buy-freight-${lang}`,`buy-solo-${lang}`])assert.ok(html.includes(`href="${slug}"`),slug);
+    const cards=[...html.matchAll(/<article class="card">([\s\S]*?)<\/article>/g)].map(m=>m[1]);
+    assert.equal(cards.length,3);
+    for(const [name,price] of [['FreightQuote Template Kit','480'],['Freight Cost Workbench','700'],['Solo Project Quote','480']])
+      assert.equal(cards.find(card=>card.includes('<h2>'+name+'</h2>'))?.match(/class="price">JPY ([\d,]+)/)?.[1],price,name);
     assert.doesNotMatch(html,/JPY 2,980|JPY 9,800|<button disabled>|PRODUCT SHOWCASE|not taking orders|当前不接受订单/);
   });
   test(`${lang}: both localized sales pages preserve the price, real payment link and free-access terms`,async()=>{
@@ -19,6 +23,7 @@ for(const lang of ['ja','zh','en']){
       assert.equal(url.origin+url.pathname,links[kind]);
       assert.equal(url.searchParams.get('locale'),lang);
       assert.deepEqual([...url.searchParams.keys()],['locale']);
+      assert.deepEqual([...html.matchAll(/class="price">JPY ([\d,]+)/g)].map(m=>m[1]),[kind==='freight'?'700':'480'],kind+' '+lang+' exact visible total');
       for(const token of [kind==='freight'?'700':'480','free-vs-paid',`${kind}-download`,'tool-purchase-terms','commerce-disclosure','privacy-policy','help'])assert.ok(html.includes(token),token);
       assert.doesNotMatch(html,/<form|<script|sk_live_|guaranteed|guarantee a refund|sold out/i);
     }
